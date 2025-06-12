@@ -35,3 +35,6 @@ out/
 
 ### VS Code ###
 .vscode/
+
+### Secret Configuration (Do not commit sensitive files) ###
+src/main/resources/application-secret.yml
