@@ -1,5 +1,5 @@
 server:
-  port: 8080
+  port: 0
 
 eureka:
   instance:
@@ -12,7 +12,7 @@ eureka:
 
 spring:
   application:
-    name: smile-movie-service
+    name: movie-service
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://mysql.coffit.xyz:3322/moviedb
@@ -25,9 +25,9 @@ spring:
     properties:
       hibernate:
         format_sql: true
-#  config:
-#    import:
-#      - classpath:/bootstrap.yml
+  config:
+    import:
+      - classpath:/bootstrap.yml
 
 mybatis:
   configuration:
