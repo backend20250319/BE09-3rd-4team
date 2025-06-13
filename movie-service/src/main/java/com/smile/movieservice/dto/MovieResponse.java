@@ -1,19 +1,21 @@
 package com.smile.movieservice.dto;
 
-
 import lombok.*;
 
-@Getter
-@Setter
+import java.util.List;
+
+@Getter @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 public class MovieResponse {
     private Long id;
     private String title;
-    private String overview;
-    private String genre;
+    private String description;
+    private String ageRating;          // ✅ 시청 연령 필드 추가
+    private List<String> genres;
     private Double rating;
     private String releaseDate;
-    private String posterUrl;
+    private String directorName;
+    private List<String> actors;
 }

@@ -1,5 +1,6 @@
 package com.smile.movieservice.controller;
 
+import com.smile.movieservice.MovieServiceApplication;
 import com.smile.movieservice.dto.MovieRequest;
 import com.smile.movieservice.dto.MovieResponse;
 import com.smile.movieservice.service.MovieService;
@@ -22,6 +23,7 @@ public class MovieController {
         MovieResponse response = movieService.createMovie(request);
         return ResponseEntity.ok(ApiResponse.success(response));
     }
+
     @PutMapping("/modify/{id}")
     public ResponseEntity<ApiResponse<MovieResponse>> updateMovie(@PathVariable Long id,
                                                                   @RequestBody MovieRequest request) {
@@ -34,16 +36,18 @@ public class MovieController {
         movieService.deleteMovie(id);
         return ResponseEntity.ok(ApiResponse.success(null));
     }
-    @GetMapping("/fetch{id}")
+
+    // 전체 조회 - /movies/fetch
+    @GetMapping("/fetchAll")
     public ResponseEntity<ApiResponse<List<MovieResponse>>> getAllMovies() {
         List<MovieResponse> movies = movieService.getAllMovies();
         return ResponseEntity.ok(ApiResponse.success(movies));
     }
-    @GetMapping("/fetchAll{id}")
+
+    // 단건 조회 - /movies/fetchAll/{id}
+    @GetMapping("/fetchAll/{id}")
     public ResponseEntity<ApiResponse<MovieResponse>> getMovieById(@PathVariable Long id) {
         MovieResponse movie = movieService.getMovieById(id);
         return ResponseEntity.ok(ApiResponse.success(movie));
     }
-
-
 }
