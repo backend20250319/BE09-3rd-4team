@@ -17,29 +17,29 @@ public class MovieController {
 
     private final MovieService movieService;
 
-    @PostMapping
+    @PostMapping("/regist")
     public ResponseEntity<ApiResponse<MovieResponse>> createMovie(@RequestBody MovieRequest request) {
         MovieResponse response = movieService.createMovie(request);
         return ResponseEntity.ok(ApiResponse.success(response));
     }
-    @PutMapping("/{id}")
+    @PutMapping("/modify/{id}")
     public ResponseEntity<ApiResponse<MovieResponse>> updateMovie(@PathVariable Long id,
                                                                   @RequestBody MovieRequest request) {
         MovieResponse response = movieService.updateMovie(id, request);
         return ResponseEntity.ok(ApiResponse.success(response));
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<ApiResponse<Void>> deleteMovie(@PathVariable Long id) {
         movieService.deleteMovie(id);
         return ResponseEntity.ok(ApiResponse.success(null));
     }
-    @GetMapping
+    @GetMapping("/fetch{id}")
     public ResponseEntity<ApiResponse<List<MovieResponse>>> getAllMovies() {
         List<MovieResponse> movies = movieService.getAllMovies();
         return ResponseEntity.ok(ApiResponse.success(movies));
     }
-    @GetMapping("/{id}")
+    @GetMapping("/fetchAll{id}")
     public ResponseEntity<ApiResponse<MovieResponse>> getMovieById(@PathVariable Long id) {
         MovieResponse movie = movieService.getMovieById(id);
         return ResponseEntity.ok(ApiResponse.success(movie));
