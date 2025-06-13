@@ -2,6 +2,7 @@ package com.smile.review.domain;
 
 import jakarta.persistence.*;
 
+import java.sql.ConnectionBuilder;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,15 +14,15 @@ public class Review {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long reviewId;
 
-    @ManyToOne(fetch = FetchType.LAZY,optional = false)
-    @JoinColumn(name ="user_id")
-    private User user;
-
-    @ManyToOne(fetch = FetchType.LAZY,optional = false)
-    @JoinColumn(name = "film_id")
-    private Film film;
+//    @ManyToOne(fetch = FetchType.LAZY,optional = false)
+//    @JoinColumn(name ="user_id")
+//    private User user;
+//
+//    @ManyToOne(fetch = FetchType.LAZY,optional = false)
+//    @JoinColumn(name = "film_id")
+//    private Film film;
 
     @Column(columnDefinition = "Text", nullable = false)
     private String content;
@@ -40,6 +41,8 @@ public class Review {
 
     @OneToMany(mappedBy = "review", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<ReviewLike> likes = new ArrayList<>();
+
+
 
 
     @PrePersist

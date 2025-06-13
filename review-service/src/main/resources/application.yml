@@ -1,0 +1,74 @@
+# application.yml
+
+spring:
+  datasource:
+    # IntelliJ Data Source 화면의 URL 정보 활용
+    url: jdbc:mysql://mysql.coffit.xyz:3322/moviedb?useSSL=false&serverTimezone=UTC&characterEncoding=UTF-8
+    username: smile
+    password: smile  # 실제 비밀번호로 바꿔주세요
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: validate    # 개발 중에만 update; 운영환경에서는 validate 또는 none 권장
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+movie:
+  service:
+    base-url: http://localhost:8081   # 영화 서비스 호출용 기본 URL
+    # 필요 시 타임아웃, 인증 토큰 등의 설정 추가
+
+# Resilience4j 설정 예시
+resilience4j:
+  circuitbreaker:
+    configs:
+      default:
+        registerHealthIndicator: true
+        slidingWindowSize: 10
+        minimumNumberOfCalls: 5
+        failureRateThreshold: 50
+        waitDurationInOpenState: 10s
+        permittedNumberOfCallsInHalfOpenState: 3
+    instances:
+      # Feign 호출이나 RestTemplate/WebClient 호출 시 사용할 CircuitBreaker 이름
+      # 서비스 이름 또는 bean 이름과 일치시키면 관리하기 편리
+      movieServiceCircuit:
+        baseConfig: default
+
+  retry:
+    configs:
+      default:
+      # 전역 기본 설정이 필요하면 여기에. (optional)
+    instances:
+      # CircuitBreaker와 짝으로 사용하거나 별도 retry 용도로 사용할 이름
+      movieServiceRetry:
+        waitDuration: 500ms
+        # 최대 재시도 횟수 지정 (optional, 기본 3회 등)
+        maxAttempts: 3
+
+# (필요 시) Feign client timeouts나 WebClient timeouts 설정
+# feign:
+#   client:
+#     config:
+#       movie-service:
+#         connectTimeout: 5000
+#         readTimeout: 5000
+
+# (필요 시) Datasource 커넥션 풀 추가 설정
+# spring:
+#   datasource:
+#     hikari:
+#       maximum-pool-size: 10
+#       minimum-idle: 2
+#       idle-timeout: 600000
+#       connection-timeout: 30000
+
+# (필요 시) 로그 레벨 조정
+logging:
+  level:
+    com.smile.review: DEBUG
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE

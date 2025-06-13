@@ -16,12 +16,12 @@ public class Comment {
     @JoinColumn(name = "review_id")
     private Review review;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "user_id")
-    private User user;
+//    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+//    @JoinColumn(name = "user_id")
+//    private User user;
 
-    @Column(columnDefinition = "TEXT", nullable = false)
-    private String content;
+    @Column(columnDefinition = "TEXT", nullable = false, length = 2000)
+    private String content; // 리뷰 텍스트
 
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
