@@ -1,5 +1,6 @@
 package com.smile.review.service;
 
+import com.smile.review.client.UserClient;
 import com.smile.review.domain.Comment;
 import com.smile.review.dto.requestdto.CommentRequestDto;
 import com.smile.review.dto.responsedto.CommentResponseDto;
