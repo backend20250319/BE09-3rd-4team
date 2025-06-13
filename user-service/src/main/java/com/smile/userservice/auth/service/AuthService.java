@@ -25,10 +25,10 @@ public class AuthService {
 
     public TokenResponse login(LoginRequest request) {
 
-        User user = userRepository.findByUserId(request.getUsername())
+        User user = userRepository.findByUserId(request.getUserId())
                 .orElseThrow(() -> new BadCredentialsException("올바르지 않은 아이디 혹은 비밀번호"));
 
-        if(!passwordEncoder.matches(request.getPassword(), user.getUserPwd())) {
+        if(!passwordEncoder.matches(request.getUserPwd(), user.getUserPwd())) {
             throw new BadCredentialsException("올바르지 않은 아이디 혹은 비밀번호");
         }
 
@@ -58,19 +58,18 @@ public class AuthService {
         String userId = jwtTokenProvider.getUserIdFromJWT(providedRefreshToken);
 
         RefreshToken storedToken = refreshTokenRepository.findById(userId)
-                .orElseThrow(() -> new BadCredentialsException("해당 유저로 조회되는 리프레시 토큰 없음"));
+                .orElseThrow(() -> new BadCredentialsException("해당 유저로 조회되는 refreshToken이 없습니다."));
 
         if(!storedToken.getToken().equals(providedRefreshToken)) {
-            throw new BadCredentialsException("리프레시 토큰 일치하지 않음");
+            throw new BadCredentialsException("저장된 refreshToken과 일치하지 않습니다.");
         }
 
         if(storedToken.getExpiryDate().before(new Date())) {
-            throw new BadCredentialsException("리프레시 토큰 유효시간 만료");
-
+            throw new BadCredentialsException("refreshToken의 유효 시간이 만료되었습니다.");
         }
 
         User user = userRepository.findByUserId(userId)
-                .orElseThrow(() -> new BadCredentialsException("해당 리프레시 토큰을 위한 유저 없음"));
+                .orElseThrow(() -> new BadCredentialsException("해당 refreshToken을 위한 유저가 없습니다."));
 
         String accessToken = jwtTokenProvider.createToken(user.getUserId(), user.getRole().name(), user.getId());
         String refreshToken = jwtTokenProvider.createRefreshToken(user.getUserId(), user.getRole().name(), user.getId());
@@ -98,6 +97,14 @@ public class AuthService {
 
         jwtTokenProvider.validateToken(refreshToken);
         String userId = jwtTokenProvider.getUserIdFromJWT(refreshToken);
+
+        RefreshToken storedToken = refreshTokenRepository.findById(userId)
+                .orElseThrow(() -> new BadCredentialsException("해당 유저로 조회되는 refreshToken이 없습니다."));
+
+        if(!storedToken.getToken().equals(refreshToken)) {
+            throw new BadCredentialsException("저장된 refreshToken과 일치하지 않습니다.");
+        }
+
         refreshTokenRepository.deleteById(userId);
     }
 }
