@@ -1,4 +1,4 @@
-package com.smile.gateway.jwt;
+package com.smile.gatewayservice.jwt;
 
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;

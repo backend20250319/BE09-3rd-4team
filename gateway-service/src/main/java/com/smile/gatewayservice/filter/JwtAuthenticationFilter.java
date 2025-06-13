@@ -1,6 +1,6 @@
-package com.smile.gateway.filter;
+package com.smile.gatewayservice.filter;
 
-import com.smile.gateway.jwt.GatewayJwtTokenProvider;
+import com.smile.gatewayservice.jwt.GatewayJwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
