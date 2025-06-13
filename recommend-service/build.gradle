@@ -1,0 +1,58 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '3.4.6'
+    id 'io.spring.dependency-management' version '1.1.7'
+}
+
+group = 'com.smile'
+version = '0.0.1-SNAPSHOT'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+
+    // 기본적인 Spring Boot 앱 구동
+    implementation 'org.springframework.boot:spring-boot-starter'
+
+    // REST API 제공
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+
+    // JSON 직렬화/역직렬화 및 객체 처리
+    implementation 'com.fasterxml.jackson.core:jackson-databind'
+
+    // Config Client 기능 (Config Server에서 설정 받아오기)
+    implementation 'org.springframework.cloud:spring-cloud-starter-config'
+
+    // Actuator (운영 상태 확인: /actuator/health 등)
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+
+    // (선택) Eureka Client - 마이크로서비스 등록용
+    implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
+
+    // Lombok (Getter/Setter, 생성자 등 편의 제공)
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+
+    // 테스트
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:2023.0.1"
+    }
+}
+
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
