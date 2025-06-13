@@ -23,17 +23,12 @@ spring:
     properties:
       hibernate:
         format_sql: true
-#  config:
-#    import:
-#      - classpath:/bootstrap.yml
+  config:
+    import:
+      - classpath:/bootstrap.yml
 
 mybatis:
   configuration:
     map-underscore-to-camel-case: true
   mapper-locations: mappers/**/*.xml
   type-aliases-package: com.smile.userservice.query.dto
-
-jwt:
-  secret: LH9QZL8upsPBfuDY+Dkb1kT9DZIIUSuA2u4O6Lfi3mkEfeWtETpVTcR/8SMZdJWn/xNTuCQBE6rBvDXgnVmscQ==
-  expiration: 1800000
-  refresh-expiration: 604800000
