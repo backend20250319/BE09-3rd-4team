@@ -3,7 +3,7 @@ server:
 
 spring:
   application:
-    name: gateway-server
+    name: gateway-service
 
   cloud:
     gateway:
@@ -13,42 +13,41 @@ spring:
           predicates:
             - Path=/api/v1/user-service/**
           filters:
-            - 'RewritePath=/api/v1/user-service/(?<segment>.*), /\${segment}'
+            - RewritePath=/api/v1/user-service/(?<segment>.*), /\${segment}
 
         - id: movie-service
           uri: lb://MOVIE-SERVICE
           predicates:
             - Path=/api/v1/movie-service/**
           filters:
-            - 'RewritePath=/api/v1/movie-service/(?<segment>.*), /\${segment}'
+            - RewritePath=/api/v1/movie-service/(?<segment>.*), /\${segment}
 
         - id: review-service
           uri: lb://REVIEW-SERVICE
           predicates:
             - Path=/api/v1/review-service/**
           filters:
-            - 'RewritePath=/api/v1/review-service/(?<segment>.*), /\${segment}'
+            - RewritePath=/api/v1/review-service/(?<segment>.*), /\${segment}
 
         - id: search-service
           uri: lb://SEARCH-SERVICE
           predicates:
             - Path=/api/v1/search-service/**
           filters:
-            - 'RewritePath=/api/v1/search-service/(?<segment>.*), /\${segment}'
+            - RewritePath=/api/v1/search-service/(?<segment>.*), /\${segment}
 
         - id: recommend-service
           uri: lb://RECOMMEND-SERVICE
           predicates:
             - Path=/api/v1/recommend-service/**
           filters:
-            - 'RewritePath=/api/v1/recommend-service/(?<segment>.*), /\${segment}'
-
+            - RewritePath=/api/v1/recommend-service/(?<segment>.*), /\${segment}
+  config:
+    import:
+      - classpath:/bootstrap.yml
 eureka:
   client:
     register-with-eureka: true
     fetch-registry: true
     service-url:
       defaultZone: http://localhost:8761/eureka
-
-jwt:
-  secret: LH9QZL8upsPBfuDY+Dkb1kT9DZIIUSuA2u4O6Lfi3mkEfeWtETpVTcR/8SMZdJWn/xNTuCQBE6rBvDXgnVmscQ==
