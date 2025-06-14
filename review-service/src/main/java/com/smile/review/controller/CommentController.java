@@ -4,13 +4,17 @@ import com.smile.review.dto.requestdto.CommentRequestDto;
 import com.smile.review.dto.responsedto.CommentResponseDto;
 import com.smile.review.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.security.Principal;
-import java.util.List;
+
 
 @RestController
 @RequestMapping("/reviews/{reviewId}/comments")
@@ -23,15 +27,13 @@ public class CommentController {
         this.commentService = commentService;
     }
 
-    /**
-     * 댓글 목록 조회
-     * GET /reviews/{reviewId}/comments
-     */
+    /** 댓글 목록 조회 (예시) */
     @GetMapping
-    public ResponseEntity<List<CommentResponseDto>> listComments(
-            @PathVariable Long reviewId) {
-        List<CommentResponseDto> list = commentService.listComments(reviewId);
-        return ResponseEntity.ok(list);
+    public ResponseEntity<Page<CommentResponseDto>> listComments(
+            @PathVariable Long reviewId,
+            @PageableDefault(size = 20, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable) {
+        Page<CommentResponseDto> page = commentService.getComments(reviewId, pageable.getPageNumber(), pageable.getSize());
+        return ResponseEntity.ok(page);
     }
 
     /**
@@ -45,15 +47,14 @@ public class CommentController {
             Principal principal) {
         String userName = principal.getName();
         CommentResponseDto created = commentService.addComment(reviewId, userName, dto);
-
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()   // "/reviews/{reviewId}/comments"
                 .path("/{id}")
                 .buildAndExpand(created.getId())
                 .toUri();
-
         return ResponseEntity.created(location).body(created);
     }
+
 
     /**
      * 댓글 수정

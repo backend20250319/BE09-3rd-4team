@@ -6,6 +6,7 @@ import com.smile.review.dto.responsedto.LikeResponseDto;
 
 import com.smile.review.repository.ReviewRepository;
 import com.smile.review.repository.like.ReviewLikeRepository;
+
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import io.github.resilience4j.retry.annotation.Retry;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,5 +68,11 @@ public class LikeService {
 */
     public LikeResponseDto fallbackToggleLike(Long userIdFromToken, Long reviewId, Throwable t) {
         throw new RuntimeException("좋아요 처리 중 오류 발생: " + t.getMessage());
+    }
+
+    public long countLikes(Long reviewId) {
+    }
+
+    public Boolean hasLiked(Long reviewId, String name) {
     }
 }

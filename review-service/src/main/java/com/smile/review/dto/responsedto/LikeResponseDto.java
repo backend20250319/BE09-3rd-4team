@@ -6,8 +6,8 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+
 public class LikeResponseDto {
-    private Long reviewId;
-    private Long likeCount;
-    private Boolean liked;
+    private boolean liked;
+    private long totalLikes;
 }

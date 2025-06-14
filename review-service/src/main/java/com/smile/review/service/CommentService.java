@@ -1,36 +1,44 @@
 package com.smile.review.service;
 
 import com.smile.review.client.UserClient;
+import com.smile.review.client.dto.UserDto;
 import com.smile.review.domain.Comment;
 import com.smile.review.dto.requestdto.CommentRequestDto;
 import com.smile.review.dto.responsedto.CommentResponseDto;
 import com.smile.review.repository.ReviewRepository;
 import com.smile.review.repository.comment.CommentRepository;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+
+import java.awt.print.Pageable;
 import java.time.LocalDateTime;
 
+
+@Getter
+@Setter
 @Service
+
 public class CommentService {
     private final CommentRepository commentRepository;
     private final ReviewRepository reviewRepository;
     private final UserClient userClient;
 
     @Autowired
-    public CommentService(CommentRepository commentRepository,
-                          ReviewRepository reviewRepository,
-                          UserClient userClient
-    ) {
+    public CommentService(CommentRepository commentRepository, ReviewRepository reviewRepository, UserClient userClient) {
         this.commentRepository = commentRepository;
         this.reviewRepository = reviewRepository;
         this.userClient = userClient;
     }
+
 
     @Transactional
     public CommentResponseDto.CommentResponseDtoBuilder createComment(Long userId, CommentRequestDto dto) {
@@ -44,7 +52,7 @@ public class CommentService {
                 .createdAt(LocalDateTime.now())
                 .build();
         Comment saved = commentRepository.save(comment);
-        Object userDto = userClient.getUserById(userId);
+        Object userDto = userClient.getUserId(userId);
         return CommentResponseDto.fromEntity(saved, userDto);
     }
 
@@ -77,7 +85,7 @@ public class CommentService {
         // 4) 사용자 정보 조회
         UserDto userDto;
         try {
-            userDto = userClient.getUserByName(userName);
+            userDto = userClient.getUserName(userName);
         } catch (Exception ex) {
             throw new IllegalArgumentException("사용자 정보를 가져올 수 없습니다: " + userName, ex);
         }
@@ -97,7 +105,7 @@ public class CommentService {
         return CommentResponseDto.fromEntity(updated, userDto);
     }
 
-    @Override
+
     @Transactional
     public void deleteComment(Long reviewId, Long commentId, String userName) {
         // 1) review 존재 확인
@@ -128,5 +136,9 @@ public class CommentService {
         }
         // 6) 삭제
         commentRepository.delete(comment);
+    }
+
+    public CommentResponseDto addComment(Long reviewId, String userName, CommentRequestDto dto) {
+        return null;
     }
 }

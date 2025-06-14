@@ -1,4 +1,15 @@
 package com.smile.review.client;
 
-public class MovieClient {
+import com.smile.review.client.dto.MovieDto;
+import com.smile.review.common.ApiResponse;
+import com.smile.review.config.FeignClientConfig;
+import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+
+@FeignClient(name = "smile-movie-service", configuration = FeignClientConfig.class)
+public interface MovieClient {
+
+    @GetMapping("/movie/{movieId}/")
+    ApiResponse<MovieDto> getMovieId(@PathVariable("movieId") Long movieId);
 }

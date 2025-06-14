@@ -1,8 +1,8 @@
 package com.smile.review.controller;
 
-import com.smile.review.dto.requestdto.CommentRequestDto;
+
+import com.smile.review.client.dto.UserDto;
 import com.smile.review.dto.requestdto.ReviewRequestDto;
-import com.smile.review.dto.responsedto.CommentResponseDto;
 import com.smile.review.dto.responsedto.ReviewResponseDto;
 import com.smile.review.service.CommentService;
 import com.smile.review.service.LikeService;
@@ -18,7 +18,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.security.Principal;
-import java.util.Map;
+
 
 @RestController
 @RequestMapping("/reviews")
@@ -40,51 +40,48 @@ public class ReviewController {
     /**
      * 리뷰 작성
      * POST /reviews
-     *
-     * @param reviewRequestDto { movieId, content, rating, ... }
+     * @param reviewRequestDto { movieId, content, rating }
      * @param principal        로그인 사용자 정보
      * @return 201 Created + Location 헤더 + 생성된 ReviewResponseDto
      */
     @PostMapping
-    public ResponseEntity<ReviewResponseDto> createReview(
-            @RequestBody ReviewRequestDto reviewRequestDto,
-            Principal principal) {
+    public ResponseEntity<ReviewResponseDto> createReview(@RequestBody ReviewRequestDto req
+//            , UserDto userDto
+    ) {
 
-        String userName = principal.getName();
-        // 서비스에서 ReviewResponseDto를 반환하도록 구현해야 함
-        ReviewResponseDto created = reviewService.createReview(userName, reviewRequestDto);
-
+    /*    ReviewResponseDto created = reviewService.createReview(userDto.getUserId(),reviewRequestDto);
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()   // "/reviews"
                 .path("/{id}")
                 .buildAndExpand(created.getId())
                 .toUri();
 
-        return ResponseEntity.created(location).body(created);
+        return ResponseEntity.created(location).body(created);*/
+
+
+            return ResponseEntity.ok(reviewService.createReview(
+                    req.getUserId(), req.getMovieId(), req.getContent(), req.getRating()
+            ));
+
     }
 
     /**
      * 리뷰 목록 조회 (페이징·정렬·필터링)
-     * GET /reviews
+     * GET /reviews?genre=action&rating=4&sort=rating
      *
-     * @param genre   (선택) 장르 필터: 예: "Action"
-     * @param minRating (선택) 평점 최소 필터: 예: 4 (4 이상)
-     * @param sortBy  (선택) 정렬 기준: "rating" 또는 "createdAt". 없으면 default: 최신순(createdAt desc)
-     * @param pageable Spring Data Pageable: page, size 등의 페이징 정보. 정렬도 pageable로 받을 수 있음.
-     *
-     * 예시 요청:
-     *  GET /reviews?genre=Action&minRating=4&sortBy=rating&page=0&size=10
+     * @param genre   (선택) 장르 필터
+     * @param rating  (선택) 평점 필터: 예: 4 → 평점이 4 이상 혹은 정확히 4 (서비스 사양에 맞춰)
+     * @param sort    (선택) 정렬 기준: "rating" 또는 "createdAt". 없으면 default 최신순(createdAt desc)
+     * @param pageable Spring Data Pageable: page, size, sort 파라미터가 있으면 반영
      */
     @GetMapping
     public ResponseEntity<Page<ReviewResponseDto>> listReviews(
             @RequestParam(value = "genre", required = false) String genre,
-            @RequestParam(value = "minRating", required = false) Integer minRating,
-            @RequestParam(value = "sortBy", required = false) String sortBy,
+            @RequestParam(value = "rating", required = false) Integer rating,
+            @RequestParam(value = "sort", required = false) String sort,
             @PageableDefault(size = 20, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable) {
 
-        // 서비스 메서드에 filter/정렬 정보를 전달
-        // 예: reviewService.findReviews(genre, minRating, sortBy, pageable)
-        Page<ReviewResponseDto> page = reviewService.findReviews(genre, minRating, sortBy, pageable);
+        Page<ReviewResponseDto> page = reviewService.findReviews(genre, rating, sort, pageable);
         return ResponseEntity.ok(page);
     }
 
