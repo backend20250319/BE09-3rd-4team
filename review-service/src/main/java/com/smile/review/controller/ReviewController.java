@@ -1,7 +1,6 @@
 package com.smile.review.controller;
 
 
-import com.smile.review.client.dto.UserDto;
 import com.smile.review.dto.requestdto.ReviewRequestDto;
 import com.smile.review.dto.responsedto.ReviewResponseDto;
 import com.smile.review.service.CommentService;
@@ -14,10 +13,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-
-import java.net.URI;
-import java.security.Principal;
 
 
 @RestController
@@ -49,14 +44,6 @@ public class ReviewController {
 //            , UserDto userDto
     ) {
 
-    /*    ReviewResponseDto created = reviewService.createReview(userDto.getUserId(),reviewRequestDto);
-        URI location = ServletUriComponentsBuilder
-                .fromCurrentRequest()   // "/reviews"
-                .path("/{id}")
-                .buildAndExpand(created.getId())
-                .toUri();
-
-        return ResponseEntity.created(location).body(created);*/
 
 
             return ResponseEntity.ok(reviewService.createReview(
@@ -91,9 +78,9 @@ public class ReviewController {
      */
     @GetMapping("/{reviewId}")
     public ResponseEntity<ReviewResponseDto> getReview(
-            @PathVariable Long reviewId) {
+            @PathVariable Long reviewId, Long userId, Long movieId) {
 
-        ReviewResponseDto dto = reviewService.getReviewById(reviewId);
+        ReviewResponseDto dto = reviewService.getReviewId(reviewId,userId,movieId);
         return ResponseEntity.ok(dto);
     }
 

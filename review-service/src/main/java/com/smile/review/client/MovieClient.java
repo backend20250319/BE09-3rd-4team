@@ -7,7 +7,7 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
-@FeignClient(name = "smile-movie-service", configuration = FeignClientConfig.class)
+@FeignClient(name = "movie-service", configuration = FeignClientConfig.class)
 public interface MovieClient {
 
     @GetMapping("/movie/{movieId}/")

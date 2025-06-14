@@ -7,37 +7,32 @@ import com.smile.review.client.dto.MovieDto;
 import com.smile.review.client.dto.UserDto;
 
 import com.smile.review.domain.Review;
+import com.smile.review.dto.requestdto.ReviewRequestDto;
 import com.smile.review.dto.responsedto.ReviewResponseDto;
 
 import com.smile.review.repository.ReviewRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 
 @Service
-public class ReviewService {
+public interface ReviewService {
 
-    private MovieClient movieClient;
-    private UserClient userClient;
-    private ReviewRepository reviewRepository;
+    ReviewResponseDto getReviewId(Long reviewId, Long userId, Long movieId);
+
+    MovieClient movieClient = null;
+    UserClient userClient = null;
+    ReviewRepository reviewRepository = null;
     // ... 기타 의존성 주입
 
-    @Autowired
-    public ReviewService(
-                         MovieClient movieClient,
-                         UserClient userClient,
-                         ReviewRepository reviewRepository /*, ... */) {
-        this.movieClient = movieClient;
-        this.userClient = userClient;
-        this.reviewRepository = reviewRepository;
-    }
 
-    public ReviewService() {
-    }
 
-    public ReviewResponseDto createReview(Long userId, Long movieId, String content, int rating) {
+    public default ReviewResponseDto createReview(Long userId, Long movieId, String content, int rating) {
         // 1) 사용자 검증
         UserDto userDto = userClient.getUserId(userId).getData();
 
@@ -60,6 +55,17 @@ public class ReviewService {
         return ReviewResponseDto.fromEntity(saved, userDto.getUsername(), movieDto.getTitle());
     }
 
+    @Transactional(readOnly = true)
+    Page<ReviewResponseDto> listReviews(int page, int size, String sortBy);
+
+    @Transactional
+    Page<ReviewResponseDto> findReviews(String genre, Integer rating, String sort, Pageable pageable);
+
+    @Transactional
+    ReviewResponseDto editReview(Long reviewId, String userName, ReviewRequestDto dto);
+
+    @Transactional
+    void deleteReview(Long reviewId, Long userId);
 }
 
 

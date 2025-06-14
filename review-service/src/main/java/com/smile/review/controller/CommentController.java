@@ -32,7 +32,7 @@ public class CommentController {
     public ResponseEntity<Page<CommentResponseDto>> listComments(
             @PathVariable Long reviewId,
             @PageableDefault(size = 20, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable) {
-        Page<CommentResponseDto> page = commentService.getComments(reviewId, pageable.getPageNumber(), pageable.getSize());
+        Page<CommentResponseDto> page = commentService.getComments(reviewId, pageable.getPageNumber(), pageable.getPageSize());
         return ResponseEntity.ok(page);
     }
 
@@ -50,7 +50,7 @@ public class CommentController {
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()   // "/reviews/{reviewId}/comments"
                 .path("/{id}")
-                .buildAndExpand(created.getId())
+                .buildAndExpand(created.getCommentId())
                 .toUri();
         return ResponseEntity.created(location).body(created);
     }

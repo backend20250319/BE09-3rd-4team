@@ -11,8 +11,8 @@ import com.smile.review.domain.Review;
 import com.smile.review.dto.requestdto.ReviewRequestDto;
 import com.smile.review.dto.responsedto.ReviewResponseDto;
 import com.smile.review.repository.ReviewRepository;
-import com.smile.review.service.ReviewService;
 
+import com.smile.review.service.ReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -25,7 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 
 @Service
-public class ReviewServiceImpl extends ReviewService {
+public class ReviewServiceImpl implements ReviewService {
 
     private final ReviewRepository reviewRepository;
     private final UserClient userClient;
@@ -115,22 +115,31 @@ public class ReviewServiceImpl extends ReviewService {
 
         return reviewRepository.findAll(pageable)
                 .map(review -> {
-                    // DTO 변환 시 외부 호출이 필요하면 호출하되 비용 고려
-                    UserDto userDto;
-                    try {
-                        userDto = userClient.getUserId(userId).getData();
-                    } catch (Exception ex) {
-                        throw new IllegalArgumentException("사용자 정보를 가져올 수 없습니다: id=" + review.getUserId(), ex);
-                    }
-                    MovieDto movieDto;
-                    try {
-                        movieDto = movieClient.getMovieId(movieId).getData();
-                    } catch (Exception ex) {
-                        throw new IllegalArgumentException("영화 정보를 가져올 수 없습니다: id=" + review.getMovieId(), ex);
-                    }
-                    return ReviewResponseDto.fromEntity(review,userDto.getUsername(), movieDto.getTitle());
+                    UserDto userDto = userClient.getUserId(review.getUserId()).getData();
+                    MovieDto movieDto = movieClient.getMovieId(review.getMovieId()).getData();
+                    return ReviewResponseDto.fromEntity(
+                            review,
+                            userDto.getUsername(),
+                            movieDto.getTitle()
+                    );
                 });
     }
+
+    @Override
+    @Transactional
+    public Page<ReviewResponseDto> findReviews(String genre, Integer rating, String sort, Pageable pageable) {
+        return reviewRepository.findAll(pageable)
+                .map(review -> {
+                    UserDto userDto = userClient.getUserId(review.getUserId()).getData();
+                    MovieDto movieDto = movieClient.getMovieId(review.getMovieId()).getData();
+                    return ReviewResponseDto.fromEntity(
+                            review,
+                            userDto.getUsername(),
+                            movieDto.getTitle()
+                    );
+                });
+    }
+
 
     @Override
     @Transactional
@@ -141,7 +150,7 @@ public class ReviewServiceImpl extends ReviewService {
         // 소유권 확인
         UserDto userDto;
         try {
-            userDto = userClient.getUserId(userId).getData();
+            userDto = userClient.getUserId(review.getUserId()).getData();
         } catch (Exception ex) {
             throw new IllegalArgumentException("사용자 정보를 가져올 수 없습니다: " + userName, ex);
         }
@@ -161,7 +170,7 @@ public class ReviewServiceImpl extends ReviewService {
         // 최신 사용자/영화 정보
         MovieDto movieDto;
         try {
-            movieDto = movieClient.getMovieId(movieId).getData();
+            movieDto = movieClient.getMovieId(review.getMovieId()).getData();
         } catch (Exception ex) {
             throw new IllegalArgumentException("영화 정보를 가져올 수 없습니다: id=" + updated.getMovieId(), ex);
         }

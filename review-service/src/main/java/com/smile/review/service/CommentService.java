@@ -3,30 +3,28 @@ package com.smile.review.service;
 import com.smile.review.client.UserClient;
 import com.smile.review.client.dto.UserDto;
 import com.smile.review.domain.Comment;
+import com.smile.review.domain.Review;
 import com.smile.review.dto.requestdto.CommentRequestDto;
 import com.smile.review.dto.responsedto.CommentResponseDto;
 import com.smile.review.repository.ReviewRepository;
 import com.smile.review.repository.comment.CommentRepository;
-import lombok.Getter;
-import lombok.Setter;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 
-import java.awt.print.Pageable;
+
 import java.time.LocalDateTime;
 
 
-@Getter
-@Setter
 @Service
-
 public class CommentService {
     private final CommentRepository commentRepository;
     private final ReviewRepository reviewRepository;
@@ -41,18 +39,17 @@ public class CommentService {
 
 
     @Transactional
-    public CommentResponseDto.CommentResponseDtoBuilder createComment(Long userId, CommentRequestDto dto) {
-        if (!reviewRepository.existsById(dto.getReviewId())) {
-            throw new IllegalArgumentException("해당 리뷰가 없습니다: " + dto.getReviewId());
-        }
+    public CommentResponseDto createComment(Long userId, CommentRequestDto dto) {
+        Review review = reviewRepository.findById(dto.getReviewId())
+                .orElseThrow(() -> new EntityNotFoundException("없는 리뷰 ID: " + dto.getReviewId()));
+
         Comment comment = Comment.builder()
-                .reviewId(dto.getReviewId())
+                .review(review)
                 .userId(userId)
                 .content(dto.getContent())
-                .createdAt(LocalDateTime.now())
                 .build();
         Comment saved = commentRepository.save(comment);
-        Object userDto = userClient.getUserId(userId);
+        UserDto userDto = userClient.getUserId(userId).getData();
         return CommentResponseDto.fromEntity(saved, userDto);
     }
 
@@ -63,12 +60,12 @@ public class CommentService {
         Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdAt"));
         return commentRepository.findByReviewId(reviewId, pageable)
                 .map(comment -> {
-                    Object userDto = userClient.getUserId(comment.getUserId());
+                    UserDto userDto = userClient.getUserId(comment.getUserId()).getData();
                     return CommentResponseDto.fromEntity(comment, userDto);
                 });
     }
 
-    @Override
+
     @Transactional
     public CommentResponseDto editComment(Long reviewId, Long commentId, String userName, CommentRequestDto dto) {
         // 1) review 존재 확인
@@ -79,20 +76,20 @@ public class CommentService {
         Comment comment = commentRepository.findById(commentId)
                 .orElseThrow(() -> new IllegalArgumentException("해당 댓글이 없습니다: " + commentId));
         // 3) 댓글이 해당 리뷰에 속하는지 확인
-        if (!comment.getReviewId().equals(reviewId)) {
+        if (!comment.getReview().equals(reviewId)) {
             throw new IllegalArgumentException("댓글이 해당 리뷰에 속하지 않습니다. reviewId=" + reviewId + ", commentId=" + commentId);
         }
         // 4) 사용자 정보 조회
         UserDto userDto;
         try {
-            userDto = userClient.getUserName(userName);
+            userDto = userClient.getUsername(userName).getData();
         } catch (Exception ex) {
             throw new IllegalArgumentException("사용자 정보를 가져올 수 없습니다: " + userName, ex);
         }
-        if (userDto == null || userDto.getId() == null) {
+        if (userDto == null || userDto.getUserId() == null) {
             throw new IllegalArgumentException("유효하지 않은 사용자: " + userName);
         }
-        Long userId = userDto.getId();
+        Long userId = userDto.getUserId();
         // 5) 소유권 확인: 현재 사용자가 댓글 작성자와 동일한지
         if (!comment.getUserId().equals(userId)) {
             throw new AccessDeniedException("본인이 작성한 댓글만 수정할 수 있습니다.");
@@ -116,20 +113,20 @@ public class CommentService {
         Comment comment = commentRepository.findById(commentId)
                 .orElseThrow(() -> new IllegalArgumentException("해당 댓글이 없습니다: " + commentId));
         // 3) 댓글이 해당 리뷰에 속하는지 확인
-        if (!comment.getReviewId().equals(reviewId)) {
+        if (!comment.getReview().equals(reviewId)) {
             throw new IllegalArgumentException("댓글이 해당 리뷰에 속하지 않습니다. reviewId=" + reviewId + ", commentId=" + commentId);
         }
         // 4) 사용자 정보 조회
         UserDto userDto;
         try {
-            userDto = userClient.getUserByName(userName);
+            userDto = userClient.getUsername(userName).getData();
         } catch (Exception ex) {
             throw new IllegalArgumentException("사용자 정보를 가져올 수 없습니다: " + userName, ex);
         }
-        if (userDto == null || userDto.getId() == null) {
+        if (userDto == null || userDto.getUserId()== null) {
             throw new IllegalArgumentException("유효하지 않은 사용자: " + userName);
         }
-        Long userId = userDto.getId();
+        Long userId = userDto.getUserId();
         // 5) 소유권 확인: 본인 댓글만 삭제 허용
         if (!comment.getUserId().equals(userId)) {
             throw new AccessDeniedException("본인이 작성한 댓글만 삭제할 수 있습니다.");
