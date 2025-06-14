@@ -43,8 +43,7 @@ public class SecurityConfig {
                 )
                 .authorizeHttpRequests(auth ->
                         auth.requestMatchers(HttpMethod.POST, "/users", "/auth/login", "/auth/refresh").permitAll()
-/*                                .requestMatchers(HttpMethod.GET, "/users/me").hasAuthority("USER")
-                                .requestMatchers("/actuator/**").permitAll()*/
+                                .requestMatchers(HttpMethod.GET, "/users/me").hasAuthority("USER")
                                 .anyRequest().authenticated()
                 )
                 // 기존 JWT 검증 필터 대신, Gateway가 전달한 헤더를 이용하는 필터 추가

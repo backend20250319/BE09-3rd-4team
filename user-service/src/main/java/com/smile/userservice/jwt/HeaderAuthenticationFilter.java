@@ -23,16 +23,16 @@ public class HeaderAuthenticationFilter extends OncePerRequestFilter {
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
         // API Gateway가 전달한 헤더 읽기
-        String userId = request.getHeader("X-User-Id");
+        String id = request.getHeader("X-User-Id");
         String role = request.getHeader("X-User-Role");
 
-        log.info("userId : {}", userId);
+        log.info("id : {}", id);
         log.info("role : {}", role);
 
-        if (userId != null && role != null) {
+        if (id != null && role != null) {
             // 이미 Gateway에서 검증된 정보로 인증 객체 구성
             PreAuthenticatedAuthenticationToken authentication =
-                    new PreAuthenticatedAuthenticationToken(userId, null,
+                    new PreAuthenticatedAuthenticationToken(id, null,
                             List.of(new SimpleGrantedAuthority(role)));
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }
