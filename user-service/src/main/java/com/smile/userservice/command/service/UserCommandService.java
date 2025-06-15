@@ -2,6 +2,7 @@ package com.smile.userservice.command.service;
 
 import com.smile.userservice.command.dto.UserCreateRequest;
 import com.smile.userservice.command.entity.User;
+import com.smile.userservice.command.entity.UserRole;
 import com.smile.userservice.command.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -22,6 +23,9 @@ public class UserCommandService {
 
         User user = modelMapper.map(request, User.class);   // DTO(UserCreateRequest) -> Entity(User)
         user.setEncodedPassword(passwordEncoder.encode(request.getUserPwd()));
+        if (user.getRole() == null) {
+            user.setDefaultRole(UserRole.USER);
+        }
         userRepository.save(user);
     }
 }
