@@ -31,10 +31,14 @@ public class User {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private UserRole role = UserRole.USER;
+    private UserRole role;
 
     public void setEncodedPassword(String encodedPassword) {
         this.userPwd = encodedPassword;
+    }
+
+    public void setDefaultRole(UserRole role) {
+        this.role = UserRole.USER;
     }
 
 }
