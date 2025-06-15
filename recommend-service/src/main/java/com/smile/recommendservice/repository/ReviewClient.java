@@ -5,7 +5,7 @@ import org.springframework.cloud.openfeign.FeignClient;
 
 import com.smile.recommendservice.dto.StarRatingDto;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.PathVariable;
 import java.util.List;
 
 // review-service와 통신하는 FeignClient
@@ -14,17 +14,18 @@ import java.util.List;
 @FeignClient(name = "review-service", path = "/reviews")
 public interface ReviewClient {
 
-    @GetMapping("/stars/by-age-group")
-    List<StarRatingDto> getByAgeGroup(@RequestParam String ageGroup);
+    @GetMapping("/stars/age-group/{ageGroup}")
+    List<StarRatingDto> getByAgeGroup(@PathVariable String ageGroup);
 
-    @GetMapping("/stars/by-gender")
-    List<StarRatingDto> getByGender(@RequestParam String gender);
+    @GetMapping("/stars/gender/{gender}")
+    List<StarRatingDto> getByGender(@PathVariable String gender);
 
-    @GetMapping("/stars/by-age-and-gender")
-    List<StarRatingDto> getByAgeAndGender(@RequestParam String ageGroup,
-                                          @RequestParam String gender);
+    @GetMapping("/stars/age-group/{ageGroup}/gender/{gender}")
+    List<StarRatingDto> getByAgeAndGender(@PathVariable String ageGroup,
+                                          @PathVariable String gender);
 
-    @GetMapping("/by-user-id")
-    ApiResponse<List<StarRatingDto>> getByUserId(@RequestParam String userId);
+    @GetMapping("/user/{userId}")
+    ApiResponse<List<StarRatingDto>> getByUserId(@PathVariable String userId);
+
 
 }
