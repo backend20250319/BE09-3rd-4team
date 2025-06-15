@@ -1,5 +1,7 @@
 package com.smile.recommendservice.domain.service;
 
+import com.smile.recommendservice.domain.dto.RecommendationResultDto;
+import com.smile.recommendservice.domain.dto.UserDetailsWrapper;
 import com.smile.recommendservice.dto.MovieDto;
 import com.smile.recommendservice.dto.UserDto;
 import java.util.List;
@@ -8,6 +10,7 @@ import java.util.List;
 // 다양한 추천 방식(연령대, 성별 등)을 하나의 타입으로 다루기 위해 설계
 
 public interface RecommendationPolicy {
-    List<MovieDto> recommendMovies(UserDto user);
+    RecommendationResultDto recommend(UserDetailsWrapper userWrapper);
 }
+
 

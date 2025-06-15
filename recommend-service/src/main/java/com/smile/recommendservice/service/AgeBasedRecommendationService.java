@@ -1,61 +1,72 @@
 package com.smile.recommendservice.service;
 
+import com.smile.recommendservice.common.ApiResponse;
+import com.smile.recommendservice.domain.dto.RecommendationResultDto;
+import com.smile.recommendservice.domain.dto.UserDetailsWrapper;
+import com.smile.recommendservice.domain.service.RecommendationPolicy;
+import com.smile.recommendservice.domain.type.RecommendationType;
+import com.smile.recommendservice.dto.MovieDto;
 import com.smile.recommendservice.dto.StarRatingDto;
 import com.smile.recommendservice.dto.UserDto;
+import com.smile.recommendservice.repository.MovieClient;
 import com.smile.recommendservice.repository.ReviewClient;
 import com.smile.recommendservice.repository.UserClient;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-// 연령대 기반 추천 서비스
-//
-// UserClient + ReviewClient를 이용해 추천 영화 ID 리스트 반환
+
 @Service
 @RequiredArgsConstructor
-public class AgeBasedRecommendationService {
+public class AgeBasedRecommendationService implements RecommendationPolicy {
 
     private final ReviewClient reviewClient;
-    private final UserClient userClient;
+    private final MovieClient movieClient;
 
-    public List<Long> recommendByAge(Long userId) {
-        // 1. 유저 정보 조회
-        UserDto userDto = userClient.getUserInfo(userId);
-        String ageGroup = userDto.getAgeGroup();
+    @Override
+    public RecommendationResultDto recommend(UserDetailsWrapper userWrapper) {
 
-        // 2. 같은 연령대 유저들의 별점 정보 가져오기
-        List<StarRatingDto> starRatings = reviewClient.getByAge(age);
+        // 1. 로그인 사용자 정보 가져오기 (user-service에서 /users/me)
+        UserDto user = userWrapper.getUser();
 
-        // 3. 본인 제외
-        starRatings = starRatings.stream()
-                .filter(rating -> !rating.getUserId().equals(userId))
+        String ageGroup = user.getAgeGroup(); // 나이 -> "20대", "30대" 등 변환
+
+        // 2. 같은 연령대의 사용자들의 별점 정보 조회
+        List<StarRatingDto> ratings = reviewClient.getByAgeGroup(ageGroup);
+
+        // 3. 본인(userId 동일) 제외
+        ratings = ratings.stream()
+                .filter(r -> !r.getUserId().equals(user.getUserId()))
                 .collect(Collectors.toList());
 
-        // 4. 영화별 평점 리스트 모으기
-        Map<Long, List<Double>> ratingMap = new HashMap<>();
-        for (StarRatingDto rating : starRatings) {
-            ratingMap
-                    .computeIfAbsent(rating.getMovieId(), k -> new ArrayList<>())
-                    .add(rating.getStar());
-        }
+        // 4. 영화별 평균 평점 계산
+        Map<Long, Double> movieAvgRatings = ratings.stream()
+                .collect(Collectors.groupingBy(
+                        StarRatingDto::getMovieId,
+                        Collectors.averagingDouble(StarRatingDto::getStar)
+                ));
 
-        // 5. 평균 평점 계산 후 정렬 → Top 10 영화 ID 반환
-        return ratingMap.entrySet().stream()
-                .map(entry -> Map.entry(
-                        entry.getKey(),
-                        entry.getValue().stream().mapToDouble(Double::doubleValue).average().orElse(0.0)
-                ))
-                .sorted((a, b) -> Double.compare(b.getValue(), a.getValue())) // 내림차순
+        // 5. 평점 높은 영화 Top 10 뽑기
+        List<Long> topMovieIds = movieAvgRatings.entrySet().stream()
+                .sorted((a, b) -> Double.compare(b.getValue(), a.getValue())) // 높은 순
                 .limit(10)
                 .map(Map.Entry::getKey)
                 .collect(Collectors.toList());
+
+        // 6. 각 영화 ID에 대한 상세 정보 조회 (단일 조회 반복)
+        List<MovieDto> movieDtoList = topMovieIds.stream()
+                .map(movieClient::getMovieById)
+                .collect(Collectors.toList());
+
+        // 7. 추천 결과 생성
+        return RecommendationResultDto.builder()
+                .recommendationType(RecommendationType.AGE_BASED)
+                .criteria(ageGroup)
+                .generatedAt(LocalDateTime.now())
+                .movies(movieDtoList)
+                .build();
     }
 }
-
-
-
-
