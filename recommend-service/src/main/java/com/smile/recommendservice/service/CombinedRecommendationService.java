@@ -3,6 +3,7 @@ package com.smile.recommendservice.service;
 import com.smile.recommendservice.common.ApiResponse;
 import com.smile.recommendservice.domain.dto.RecommendationResultDto;
 import com.smile.recommendservice.domain.dto.UserDetailsWrapper;
+import com.smile.recommendservice.domain.service.RecommendationPolicy;
 import com.smile.recommendservice.domain.type.RecommendationType;
 import com.smile.recommendservice.dto.MovieDto;
 import com.smile.recommendservice.dto.StarRatingDto;
@@ -22,17 +23,15 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class CombinedRecommendationService {
+public class CombinedRecommendationService implements RecommendationPolicy {
 
     private final ReviewClient reviewClient;
-    private final UserClient userClient;
     private final MovieClient movieClient;
 
-    public RecommendationResultDto recommend() {
+    public RecommendationResultDto recommend(UserDetailsWrapper userDetailsWrapper) {
 
         // 1. 로그인 사용자 정보 가져오기
-        ApiResponse<UserDetailsWrapper> response = userClient.getCurrentUserInfo();
-        UserDto user = response.getData().getUser();
+        UserDto user = userDetailsWrapper.getUser();
 
         String ageGroup = user.getAgeGroup(); // 예: "20대"
         String gender = user.getGender();     // 예: "남성"

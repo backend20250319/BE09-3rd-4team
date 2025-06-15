@@ -3,6 +3,7 @@ package com.smile.recommendservice.service;
 import com.smile.recommendservice.common.ApiResponse;
 import com.smile.recommendservice.domain.dto.RecommendationResultDto;
 import com.smile.recommendservice.domain.dto.UserDetailsWrapper;
+import com.smile.recommendservice.domain.service.RecommendationPolicy;
 import com.smile.recommendservice.domain.type.RecommendationType;
 import com.smile.recommendservice.dto.MovieDto;
 import com.smile.recommendservice.dto.StarRatingDto;
@@ -20,18 +21,16 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class AgeBasedRecommendationService {
+public class AgeBasedRecommendationService implements RecommendationPolicy {
 
     private final ReviewClient reviewClient;
-    private final UserClient userClient;
     private final MovieClient movieClient;
 
-    public RecommendationResultDto recommend() {
-
+    @Override
+    public RecommendationResultDto recommend(UserDetailsWrapper userWrapper) {
 
         // 1. 로그인 사용자 정보 가져오기 (user-service에서 /users/me)
-        ApiResponse<UserDetailsWrapper> response = userClient.getCurrentUserInfo();
-        UserDto user = response.getData().getUser();
+        UserDto user = userWrapper.getUser();
 
         String ageGroup = user.getAgeGroup(); // 나이 -> "20대", "30대" 등 변환
 

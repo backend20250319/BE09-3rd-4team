@@ -5,38 +5,55 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
-import java.util.List;
-/* 로그인 검증은 Gateway가 했고, 여기는 그 결과만 받아서 처리 */
-//Gateway에서 전달된 인증 헤더(Authorization)를 받아서
-//SecurityContext에 사용자 인증 정보를 설정하는 필터
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * Gateway가 전달한 사용자 정보를 인증 정보로 설정
+ */
 @Component
 @Slf4j
 public class HeaderAuthenticationFilter extends OncePerRequestFilter {
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+    protected void doFilterInternal(HttpServletRequest request,
+                                    HttpServletResponse response,
+                                    FilterChain filterChain)
             throws ServletException, IOException {
-        // API Gateway가 전달한 헤더 읽기
+
         String userId = request.getHeader("X-User-Id");
-        String role = request.getHeader("X-User-Role");
+        String gender = request.getHeader("X-User-Gender");
+        String ageStr = request.getHeader("X-User-Age");
 
-        log.info("userId : {}", userId);
-        log.info("role : {}", role);
+        log.debug("인증 헤더 수신: userId={}, gender={}, age={}", userId, gender, ageStr);
 
-        if (userId != null && role != null) {
-            // 이미 Gateway에서 검증된 정보로 인증 객체 구성
+        if (userId != null) {
+            Integer age = null;
+            try {
+                if (ageStr != null) {
+                    age = Integer.parseInt(ageStr);
+                }
+            } catch (NumberFormatException e) {
+                log.warn("X-User-Age 헤더 값이 정수가 아닙니다: {}", ageStr);
+            }
+
+            Map<String, Object> principal = new HashMap<>();
+            principal.put("userId", userId);
+            principal.put("gender", gender);
+            principal.put("age", age);
+
             PreAuthenticatedAuthenticationToken authentication =
-                    new PreAuthenticatedAuthenticationToken(userId, null,
-                            List.of(new SimpleGrantedAuthority(role)));
+                    new PreAuthenticatedAuthenticationToken(principal, null, null); // ← 권한 없이 생성
+
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }
+
         filterChain.doFilter(request, response);
     }
 }

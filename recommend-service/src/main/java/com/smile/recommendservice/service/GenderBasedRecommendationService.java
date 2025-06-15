@@ -3,6 +3,7 @@ package com.smile.recommendservice.service;
 import com.smile.recommendservice.common.ApiResponse;
 import com.smile.recommendservice.domain.dto.RecommendationResultDto;
 import com.smile.recommendservice.domain.dto.UserDetailsWrapper;
+import com.smile.recommendservice.domain.service.RecommendationPolicy;
 import com.smile.recommendservice.domain.type.RecommendationType;
 import com.smile.recommendservice.dto.MovieDto;
 import com.smile.recommendservice.dto.StarRatingDto;
@@ -20,17 +21,15 @@ import java.util.stream.Collectors;
 // 성별 기반 추천 서비스
 @Service
 @RequiredArgsConstructor
-public class GenderBasedRecommendationService {
+public class GenderBasedRecommendationService implements RecommendationPolicy {
 
     private final ReviewClient reviewClient;
-    private final UserClient userClient;
     private final MovieClient movieClient;
 
-    public RecommendationResultDto recommend() {
+    public RecommendationResultDto recommend(UserDetailsWrapper userDetailsWrapper) {
 
         // 1. 현재 로그인한 사용자 정보 가져오기
-        ApiResponse<UserDetailsWrapper> response = userClient.getCurrentUserInfo();
-        UserDto user = response.getData().getUser();
+        UserDto user = userDetailsWrapper.getUser();
         String gender = user.getGender(); // "남성" 또는 "여성"
 
         // 2. 같은 성별의 사용자들이 남긴 별점 정보 가져오기

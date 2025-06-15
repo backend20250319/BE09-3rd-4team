@@ -1,5 +1,8 @@
 package com.smile.recommendservice.service;
 
+import com.smile.recommendservice.domain.dto.RecommendationResultDto;
+import com.smile.recommendservice.domain.service.RecommendationPolicy;
+import com.smile.recommendservice.domain.type.RecommendationType;
 import com.smile.recommendservice.dto.MovieDto;
 import com.smile.recommendservice.dto.StarRatingDto;
 import com.smile.recommendservice.dto.UserDto;
@@ -9,21 +12,24 @@ import com.smile.recommendservice.repository.ReviewClient;
 import com.smile.recommendservice.repository.UserClient;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
 // 사용자가 선호하는 장르를 추출해서 그 장르의 영화 중 평점 높은 영화 추천
 @Service
 @RequiredArgsConstructor
-public class GenrePreferenceRecommendationService {
+public class GenrePreferenceRecommendationService implements RecommendationPolicy {
 
     private final ReviewClient reviewClient;
     private final MovieClient movieClient;
     private final UserClient userClient;
 
-    public List<MovieDto> recommend(UserDetailsWrapper userWrapper) {
+        @Override
+        public RecommendationResultDto recommend(UserDetailsWrapper userWrapper) {
         // 현재 사용자 정보
-        UserDto user = userClient.getCurrentUserInfo().getData().getUser();
+        UserDto user = userWrapper.getUser();
         String userId = user.getUserId();
 
         // 사용자가 남긴 리뷰 정보
@@ -60,7 +66,15 @@ public class GenrePreferenceRecommendationService {
                 String genre2 = genres2.get(0);
                 List<MovieDto> list1 = movieClient.getTopRatedMoviesByGenre(genre1, 5);
                 List<MovieDto> list2 = movieClient.getTopRatedMoviesByGenre(genre2, 5);
-                return mergeWithoutDuplicates(list1, list2);
+                List<MovieDto> merged = mergeWithoutDuplicates(list1, list2);
+
+                return RecommendationResultDto.builder()
+                        .recommendationType(RecommendationType.GENRE_BASED)
+                        .criteria("선호 장르 기반")
+                        .generatedAt(LocalDateTime.now())
+                        .movies(merged)
+                        .build();
+
             }
         }
 
@@ -102,11 +116,18 @@ public class GenrePreferenceRecommendationService {
         }
 
         // 영화 ID 기준으로 중복 제거
-        return recommendations.stream()
-                .collect(Collectors.collectingAndThen(
-                        Collectors.toMap(MovieDto::getId, m -> m, (m1, m2) -> m1, LinkedHashMap::new),
-                        m -> new ArrayList<>(m.values())
-                ));
+            List<MovieDto> finalList = recommendations.stream()
+                    .collect(Collectors.collectingAndThen(
+                            Collectors.toMap(MovieDto::getId, m -> m, (m1, m2) -> m1, LinkedHashMap::new),
+                            m -> new ArrayList<>(m.values())
+                    ));
+
+            return RecommendationResultDto.builder()
+                    .recommendationType(RecommendationType.GENRE_BASED)
+                    .criteria("선호 장르 기반")
+                    .generatedAt(LocalDateTime.now())
+                    .movies(finalList)
+                    .build();
     }
 
     private double average(List<Double> ratings) {
