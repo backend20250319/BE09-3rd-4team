@@ -1,4 +1,4 @@
 package com.smile.searchservice.config;
 
-public class SecurityConfig {
+public class ModelMapperConfig {
 }
