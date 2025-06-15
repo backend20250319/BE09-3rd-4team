@@ -4,7 +4,7 @@ public enum RecommendationType {
 
     AGE_BASED,
     GENDER_BASED,
-    COMBINED,         // 성별 + 연령대 기반
-    GENRE_BASED
+    COMBINED        // 성별 + 연령대 기반
+
 
 }
