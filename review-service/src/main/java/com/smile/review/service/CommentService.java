@@ -39,7 +39,7 @@ public class CommentService {
 
 
     @Transactional
-    public CommentResponseDto createComment(Long userId, CommentRequestDto dto) {
+    public CommentResponseDto createComment(String userId, CommentRequestDto dto) {
         Review review = reviewRepository.findById(dto.getReviewId())
                 .orElseThrow(() -> new EntityNotFoundException("없는 리뷰 ID: " + dto.getReviewId()));
 
@@ -89,7 +89,7 @@ public class CommentService {
         if (userDto == null || userDto.getUserId() == null) {
             throw new IllegalArgumentException("유효하지 않은 사용자: " + userName);
         }
-        Long userId = userDto.getUserId();
+        String userId = userDto.getUserId();
         // 5) 소유권 확인: 현재 사용자가 댓글 작성자와 동일한지
         if (!comment.getUserId().equals(userId)) {
             throw new AccessDeniedException("본인이 작성한 댓글만 수정할 수 있습니다.");
@@ -126,7 +126,7 @@ public class CommentService {
         if (userDto == null || userDto.getUserId()== null) {
             throw new IllegalArgumentException("유효하지 않은 사용자: " + userName);
         }
-        Long userId = userDto.getUserId();
+        String userId = userDto.getUserId();
         // 5) 소유권 확인: 본인 댓글만 삭제 허용
         if (!comment.getUserId().equals(userId)) {
             throw new AccessDeniedException("본인이 작성한 댓글만 삭제할 수 있습니다.");

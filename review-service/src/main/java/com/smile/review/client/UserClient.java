@@ -12,8 +12,8 @@ public interface UserClient {
 
     // 2. 내부에서 user-service를 호출하는 상황
     @GetMapping("/users/{userId}")
-    ApiResponse<UserDto> getUserId(@PathVariable("userId") Long userId);
+    ApiResponse<UserDto> getUserId(@PathVariable("userId") String userId);
 
-    @GetMapping("/users/username/{username}")
+    @GetMapping("/users/{username}")
     ApiResponse<UserDto> getUsername(@PathVariable String username);
 }

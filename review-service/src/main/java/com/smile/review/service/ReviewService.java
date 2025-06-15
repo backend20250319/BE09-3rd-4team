@@ -23,7 +23,7 @@ import java.time.LocalDateTime;
 @Service
 public interface ReviewService {
 
-    ReviewResponseDto getReviewId(Long reviewId, Long userId, Long movieId);
+    ReviewResponseDto getReviewId(Long reviewId, String userId, Long movieId);
 
     MovieClient movieClient = null;
     UserClient userClient = null;
@@ -32,7 +32,7 @@ public interface ReviewService {
 
 
 
-    public default ReviewResponseDto createReview(Long userId, Long movieId, String content, int rating) {
+    public default ReviewResponseDto createReview(String userId, Long movieId, String content, int rating) {
         // 1) 사용자 검증
         UserDto userDto = userClient.getUserId(userId).getData();
 

@@ -1,6 +1,7 @@
 package com.smile.review.controller;
 
 
+import com.smile.review.client.dto.UserDto;
 import com.smile.review.dto.requestdto.ReviewRequestDto;
 import com.smile.review.dto.responsedto.ReviewResponseDto;
 import com.smile.review.service.CommentService;
@@ -41,10 +42,8 @@ public class ReviewController {
      */
     @PostMapping
     public ResponseEntity<ReviewResponseDto> createReview(@RequestBody ReviewRequestDto req
-//            , UserDto userDto
+         , UserDto userDto
     ) {
-
-
 
             return ResponseEntity.ok(reviewService.createReview(
                     req.getUserId(), req.getMovieId(), req.getContent(), req.getRating()
@@ -78,7 +77,7 @@ public class ReviewController {
      */
     @GetMapping("/{reviewId}")
     public ResponseEntity<ReviewResponseDto> getReview(
-            @PathVariable Long reviewId, Long userId, Long movieId) {
+            @PathVariable Long reviewId, String userId, Long movieId) {
 
         ReviewResponseDto dto = reviewService.getReviewId(reviewId,userId,movieId);
         return ResponseEntity.ok(dto);

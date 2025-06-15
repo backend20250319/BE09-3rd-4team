@@ -43,7 +43,7 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Override
     @Transactional
-    public ReviewResponseDto createReview(Long userId, Long movieId, String content , int rating) {
+    public ReviewResponseDto createReview(String userId, Long movieId, String content , int rating) {
         // 사용자 조회
         ApiResponse<UserDto> userDtoApiResponse = userClient.getUserId(userId);
         UserDto userDto = userDtoApiResponse.getData();
@@ -82,7 +82,7 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Override
     @Transactional(readOnly = true)
-    public ReviewResponseDto getReviewId(Long reviewId, Long userId,Long movieId) {
+    public ReviewResponseDto getReviewId(Long reviewId, String userId,Long movieId) {
         Review review = reviewRepository.findById(reviewId)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 리뷰 ID: " + reviewId));
 
@@ -186,7 +186,7 @@ public class ReviewServiceImpl implements ReviewService {
         // 소유권 확인
         UserDto userDto;
         try {
-            userDto = userClient.getUserId(userId).getData();
+            userDto = userClient.getUserId(String.valueOf(userId)).getData();
         } catch (Exception ex) {
             throw new IllegalArgumentException("사용자 정보를 가져올 수 없습니다: " + userId, ex);
         }
@@ -199,4 +199,7 @@ public class ReviewServiceImpl implements ReviewService {
 
         reviewRepository.delete(review);
     }
+
+
+
 }

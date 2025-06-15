@@ -32,10 +32,10 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
     /**
      * 작성자(userId) 기준 조회
      */
-    Page<Review> findByUserId(Long userId, Pageable pageable);
+    Page<Review> findByUserId(String userId, Pageable pageable);
 
     /**
      * 예: 특정 사용자와 특정 영화 조합으로 이전에 리뷰를 남겼는지 확인할 때
      */
-    boolean existsByUserIdAndMovieId(Long userId, Long movieId);
+    boolean existsByUserIdAndMovieId(String userId, Long movieId);
 }

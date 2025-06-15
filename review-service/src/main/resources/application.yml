@@ -1,5 +1,5 @@
 server:
-  port: 8080
+  port: 0
 eureka:
   instance:
     instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
@@ -31,4 +31,4 @@ mybatis:
   configuration:
     map-underscore-to-camel-case: true
   mapper-locations: mappers/**/*.xml
-  type-aliases-package: com.smile.userservice.query.dto
+  type-aliases-package: com.smile.user-service.query.dto

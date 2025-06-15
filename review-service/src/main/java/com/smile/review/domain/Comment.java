@@ -22,7 +22,7 @@ public class Comment {
     private Review review;
 
     @Column(name = "user_id", nullable = false)
-    private Long userId;
+    private String userId;
 
     @Column(columnDefinition = "TEXT", nullable = false, length = 2000)
     private String content;

@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @Builder
 public class ReviewResponseDto {
     private Long reviewId;
-    private Long userId;             // user 서비스에서 가져온 정보
+    private String userId;             // user 서비스에서 가져온 정보
     private String userName;      // user 서비스에서 가져온 정보
     private Long movieId;            // movie 서비스에서 가져온 정보
     private String movieTitle;    // movie 서비스에서 가져온 정보

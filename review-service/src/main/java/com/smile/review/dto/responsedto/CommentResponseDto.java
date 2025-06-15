@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 public class CommentResponseDto {
     private Long commentId;
     private Long reviewId;
-    private Long userId;
+    private String userId;
     private String userName;  // user 서비스에서 받아온 사용자 이름
     private String content;
     private LocalDateTime createdAt;

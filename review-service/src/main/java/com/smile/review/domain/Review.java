@@ -22,7 +22,7 @@ public class Review {
 
     // FK로 user_id를 직접 관리
     @Column(name = "user_id", nullable = false)
-    private Long userId;
+    private String userId;
 
     // FK로 movie_id를 직접 관리
     @Column(name = "movie_id", nullable = false)
