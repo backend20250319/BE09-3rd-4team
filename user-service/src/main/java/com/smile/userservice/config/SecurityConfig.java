@@ -42,8 +42,10 @@ public class SecurityConfig {
                                 .accessDeniedHandler(restAccessDeniedHandler) // 인가 실패
                 )
                 .authorizeHttpRequests(auth ->
-                        auth.requestMatchers(HttpMethod.POST, "/users", "/auth/login", "/auth/refresh").permitAll()
-                                .requestMatchers(HttpMethod.GET, "/users/me").hasAuthority("USER")
+                        auth.requestMatchers(HttpMethod.POST, "/users", "/auth/login", "/auth/refresh", "/auth/logout").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/users/me").permitAll()
+                                .requestMatchers(HttpMethod.PUT, "/users/modify").permitAll()
+                                .requestMatchers(HttpMethod.DELETE, "/users/delete").permitAll()
                                 .anyRequest().authenticated()
                 )
                 // 기존 JWT 검증 필터 대신, Gateway가 전달한 헤더를 이용하는 필터 추가
