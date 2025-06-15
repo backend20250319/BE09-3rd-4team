@@ -1,10 +1,10 @@
-package com.ohgiraffers.gateway;
+package com.smile.searchservice;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class Chap03GatewayLectureSourceApplicationTests {
+class MovieServiceApplicationTests {
 
     @Test
     void contextLoads() {

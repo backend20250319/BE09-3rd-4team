@@ -1,4 +1,4 @@
-package com.gateway.jwt;
+package com.smile.gatewayservice.jwt;
 
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
-import java.util.Date;
 
 @Component
 public class GatewayJwtTokenProvider {
@@ -33,13 +32,13 @@ public class GatewayJwtTokenProvider {
         }
     }
 
-    public Long getUserIdFromJWT(String token) {
+    public Long getIdFromJWT(String token) {
         Claims claims = Jwts.parser()
                 .verifyWith(secretKey)
                 .build()
                 .parseSignedClaims(token)
                 .getPayload();
-        return claims.get("userId", Long.class);
+        return claims.get("id", Long.class);
     }
 
     public String getRoleFromJWT(String token) {
