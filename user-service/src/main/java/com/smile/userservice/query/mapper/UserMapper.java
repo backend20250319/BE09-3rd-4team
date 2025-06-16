@@ -8,6 +8,8 @@ import org.apache.ibatis.annotations.Mapper;
 public interface UserMapper {
     UserDTO findUserById(Long id);
 
+    UserDTO findUserByUserId(String userId);
+
     int updateUserById(Long id, String userId, String userPwd, String userName, Integer age, String gender, UserRole role);
 
     int deleteUserById(Long id);

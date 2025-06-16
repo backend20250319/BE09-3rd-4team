@@ -25,6 +25,15 @@ public class UserQueryService {
         return UserDetailsResponse.builder().user(user).build();
     }
 
+    public UserDetailsResponse getUserInfo(String userId) {
+
+        UserDTO user = Optional.ofNullable(
+                userMapper.findUserByUserId(userId)
+        ).orElseThrow(() -> new RuntimeException("사용자 정보를 찾지 못했습니다."));
+
+        return UserDetailsResponse.builder().user(user).build();
+    }
+
     public UserDetailsResponse modifyUser(Long id, UserModifyRequest request) {
 
         String rawPassword = request.getUserPwd();
@@ -64,4 +73,5 @@ public class UserQueryService {
 
         return UserDetailsResponse.builder().user(user).build();
     }
+
 }
