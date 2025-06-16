@@ -1,7 +1,4 @@
 spring:
-  application:
-    name: search-service # search-service 자체 이름
-
   cloud:
     config:
       uri: http://localhost:8888

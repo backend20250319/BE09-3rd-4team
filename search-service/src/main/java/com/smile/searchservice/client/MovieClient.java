@@ -1,13 +1,31 @@
 package com.smile.searchservice.client;
 
+import com.smile.searchservice.common.ApiResponse;
+import com.smile.searchservice.dto.SearchRequest;
+import com.smile.searchservice.dto.SearchResponse;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.*;
 
-@FeignClient(name = "MOVIE-SERVICE")  // 'movie-service'는 실제 movie-service의 이름이어야 합니다.
+import java.util.List;
+
+@FeignClient(name = "MOVIE-SERVICE")
 public interface MovieClient {
+    @GetMapping("/movies/fetchAll")
+    ApiResponse<List<SearchResponse>> getMovies();
 
-    // 영화 정보 조회
-    @GetMapping("/movies/{id}")  // movie-service의 실제 엔드포인트 URI
-    MovieDTO getMovieById(@PathVariable("id") Long id);  // PathVariable로 ID를 받아 조회
+    @GetMapping("/movies/fetchAll/{id}")
+    ApiResponse<SearchResponse> getMovie(@PathVariable("id") Long id);
+
+    @PostMapping("/movies/regist")
+    ApiResponse<SearchResponse> addMovie(@RequestBody SearchRequest movie);
+
+    @PutMapping("/movies/modify/{id}")
+    ApiResponse<SearchResponse> updateMovie(@PathVariable("id") Long id, @RequestBody SearchRequest movie);
+
+    @DeleteMapping("/movies/delete/{id}")
+    ApiResponse<Void> deleteMovie(@PathVariable("id") Long id);
+
+    // movie-service에도 구현이 되어있어야함.
+//    @GetMapping("/movies/year/{year}")
+//    ApiResponse<List<SearchResponse>> getMoviesByYear(@PathVariable("year") int year);
 }

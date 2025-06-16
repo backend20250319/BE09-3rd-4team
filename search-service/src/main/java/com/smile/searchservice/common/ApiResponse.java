@@ -1,22 +1,22 @@
 package com.smile.searchservice.common;
 
-import lombok.Builder;
-import lombok.Getter;
-
+import lombok.*;
 import java.time.LocalDateTime;
 
 @Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Builder
 public class ApiResponse<T> {
-
     private boolean success;
     private T data;
     private String errorCode;
     private String message;
     private LocalDateTime timestamp;
 
-    // 성공 응답 생성
-    public static<T> ApiResponse<T> success(T data) {
+    // 성공 응답
+    public static <T> ApiResponse<T> success(T data) {
         return ApiResponse.<T>builder()
                 .success(true)
                 .data(data)
@@ -24,8 +24,8 @@ public class ApiResponse<T> {
                 .build();
     }
 
-    // 실패 응답 생성
-    public static<T> ApiResponse<T> failure(String errorCode, String message) {
+    // 실패 응답
+    public static <T> ApiResponse<T> failure(String errorCode, String message) {
         return ApiResponse.<T>builder()
                 .success(false)
                 .errorCode(errorCode)
