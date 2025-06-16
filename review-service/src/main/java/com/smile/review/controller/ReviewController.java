@@ -60,7 +60,7 @@ public class ReviewController {
      * @param sort    (선택) 정렬 기준: "rating" 또는 "createdAt". 없으면 default 최신순(createdAt desc)
      * @param pageable Spring Data Pageable: page, size, sort 파라미터가 있으면 반영
      */
-    @GetMapping
+    @GetMapping("/list")
     public ResponseEntity<Page<ReviewResponseDto>> listReviews(
             @RequestParam(value = "genre", required = false) String genre,
             @RequestParam(value = "rating", required = false) Double rating,
@@ -77,8 +77,7 @@ public class ReviewController {
      */
     @GetMapping("/{reviewId}/{movieId}")
     public ResponseEntity<ReviewResponseDto> getReview(
-            @PathVariable Long reviewId, @AuthenticationPrincipal String userId,Long movieId ) {
-
+            @PathVariable Long reviewId, @AuthenticationPrincipal String userId, @PathVariable Long movieId ) {
         ReviewResponseDto dto = reviewService.getReviewId(reviewId,userId,movieId);
         return ResponseEntity.ok(dto);
     }
