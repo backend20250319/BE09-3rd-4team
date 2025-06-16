@@ -43,6 +43,7 @@ public class SecurityConfig {
                 )
                 .authorizeHttpRequests(auth ->
                         auth.requestMatchers(HttpMethod.POST, "/users", "/auth/login", "/auth/refresh", "/auth/logout").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/movie/**").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/users/**").permitAll()
                                 .requestMatchers(HttpMethod.PUT, "/users/**").permitAll()
                                 .requestMatchers(HttpMethod.DELETE, "/users/**").permitAll()
