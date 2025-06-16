@@ -18,35 +18,35 @@ public class UserQueryController {
     // 로그인된 사용자 정보 조회
     @GetMapping("/users/me")
     public ResponseEntity<ApiResponse<UserDetailsResponse>> getUserDetail(
-            @AuthenticationPrincipal String id
+            @AuthenticationPrincipal String userId
     ){
-        UserDetailsResponse response = userQueryService.getUserDetail(Long.valueOf(id));
+        UserDetailsResponse response = userQueryService.getUserDetail(userId);
         return ResponseEntity.ok(ApiResponse.success(response));
     }
 
     // userId를 통한 사용자 정보 조회
     @GetMapping("/users/{userId}")
     public ResponseEntity<ApiResponse<UserDetailsResponse>> getUser(@PathVariable("userId") String userId) {
-        UserDetailsResponse response = userQueryService.getUserInfo(userId);
+        UserDetailsResponse response = userQueryService.getUserDetail(userId);
         return ResponseEntity.ok(ApiResponse.success(response));
     }
 
     // 사용자 정보 수정
     @PutMapping("/users/modify")
     public ResponseEntity<ApiResponse<UserDetailsResponse>> modifyUser(
-        @AuthenticationPrincipal String id,
+        @AuthenticationPrincipal String userId,
         @RequestBody UserModifyRequest request
     ){
-        UserDetailsResponse response = userQueryService.modifyUser(Long.valueOf(id), request);
+        UserDetailsResponse response = userQueryService.modifyUser(userId, request);
         return ResponseEntity.ok(ApiResponse.success(response));
     }
 
     // 사용자 정보 삭제
     @DeleteMapping("/users/delete")
     public ResponseEntity<ApiResponse<UserDetailsResponse>> deleteUser(
-            @AuthenticationPrincipal String id
+            @AuthenticationPrincipal String userId
     ){
-        UserDetailsResponse response = userQueryService.deleteUser(Long.valueOf(id));
+        UserDetailsResponse response = userQueryService.deleteUser(userId);
         return ResponseEntity.ok(ApiResponse.success(response));
     }
 
