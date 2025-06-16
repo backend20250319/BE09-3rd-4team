@@ -38,12 +38,12 @@ public class JwtAuthenticationFilter implements GlobalFilter, Ordered {
         }
 
         // 토큰에서 ID와 Role정보를 추출한다.
-        Long id = jwtTokenProvider.getIdFromJWT(token);
+        String id = jwtTokenProvider.getIdFromJWT(token);
         String role = jwtTokenProvider.getRoleFromJWT(token);
 
         // 기존 요청 객체를 복제(mutate)하고 헤더에 정보를 추가한다.
         ServerHttpRequest mutateRequest = exchange.getRequest().mutate()
-                .header("X-User-Id", String.valueOf(id))
+                .header("X-User-Id", id)
                 .header("X-User-Role", role)
                 .build();
 

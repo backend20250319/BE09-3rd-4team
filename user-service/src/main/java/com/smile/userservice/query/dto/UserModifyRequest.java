@@ -12,6 +12,7 @@ import lombok.Setter;
 @AllArgsConstructor
 public class UserModifyRequest {
 
+    private Long id;
     private String userId;
     private String userPwd;
     private String userName;
