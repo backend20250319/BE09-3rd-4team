@@ -6,7 +6,6 @@ import com.smile.userservice.query.dto.UserModifyRequest;
 import com.smile.userservice.query.service.UserQueryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,7 +25,6 @@ public class UserQueryController {
     }
 
     // userId를 통한 사용자 정보 조회
-    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/users/{userId}")
     public ResponseEntity<ApiResponse<UserDetailsResponse>> getUser(@PathVariable("userId") String userId) {
         UserDetailsResponse response = userQueryService.getUserInfo(userId);
