@@ -12,5 +12,5 @@ public interface UserMapper {
 
     int updateUserById(Long id, String userId, String userPwd, String userName, Integer age, String gender, UserRole role);
 
-    int deleteUserById(Long id);
+    int deleteUserById(Long id);;
 }
