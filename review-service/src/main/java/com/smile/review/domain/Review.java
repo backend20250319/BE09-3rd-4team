@@ -32,7 +32,7 @@ public class Review {
     private String content;
 
     @Column(nullable = false)
-    private int rating;
+    private double rating;
 
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;

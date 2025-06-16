@@ -10,8 +10,9 @@ import com.smile.review.domain.Review;
 
 import com.smile.review.dto.requestdto.ReviewRequestDto;
 import com.smile.review.dto.responsedto.ReviewResponseDto;
-import com.smile.review.repository.ReviewRepository;
 
+
+import com.smile.review.repository.review.ReviewRepository;
 import com.smile.review.service.ReviewService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,14 +35,16 @@ public class ReviewServiceImpl implements ReviewService {
     private final MovieClient movieClient;
 
 
+
     @Override
     @Transactional
-    public ReviewResponseDto createReview(String userId, Long movieId, String content , int rating) {
+    public ReviewResponseDto createReview(String userId, Long movieId, String content , double rating) {
+
+
         // 사용자 조회
-        ApiResponse<UserDto> userDtoApiResponse = userClient.getUserId(userId);
-        UserDto userDto = userDtoApiResponse.getData();
+        UserDto userDto;
         try {
-            userDto = userClient.getUserId(userId).getData();
+            userDto = userClient.getUserId(userId).getData().getUser();
         } catch (Exception ex) {
             throw new IllegalArgumentException("사용자 정보를 가져올 수 없습니다: " + userId, ex);
         }
@@ -56,7 +59,7 @@ public class ReviewServiceImpl implements ReviewService {
         } catch (Exception ex) {
             throw new IllegalArgumentException("영화 정보를 가져올 수 없습니다: movieId=" + movieId, ex);
         }
-        if (movieDto == null || movieDto.getMovieId() == null) {
+        if (movieDto == null || movieDto.getId() == null) {
             throw new IllegalArgumentException("유효하지 않은 영화 ID: " + movieId);
         }
 
@@ -70,7 +73,7 @@ public class ReviewServiceImpl implements ReviewService {
         Review saved = reviewRepository.save(review);
 
         // DTO 변환
-        return ReviewResponseDto.fromEntity(saved, userDto.getUsername(), movieDto.getTitle());
+        return ReviewResponseDto.fromEntity(saved, userDto.getUserId(), movieDto.getTitle());
     }
 
     @Override
@@ -82,19 +85,19 @@ public class ReviewServiceImpl implements ReviewService {
         // 작성자 정보 조회
         UserDto userDto;
         try {
-            userDto = userClient.getUserId(userId).getData();
+            userDto = userClient.getUserId(userId).getData().getUser();
         } catch (Exception ex) {
             throw new IllegalArgumentException("사용자 정보를 가져올 수 없습니다: id=" + review.getUserId(), ex);
         }
         // 영화 정보 조회
         MovieDto movieDto;
         try {
-            movieDto = movieClient.getMovieId(movieId).getData();
+            movieDto = movieClient.getMovieId(review.getMovieId()).getData();
         } catch (Exception ex) {
             throw new IllegalArgumentException("영화 정보를 가져올 수 없습니다: id=" + review.getMovieId(), ex);
         }
 
-        return ReviewResponseDto.fromEntity(review, userDto.getUsername(), movieDto.getTitle());
+        return ReviewResponseDto.fromEntity(review, userDto.getUserName(), movieDto.getTitle());
     }
 
     @Override
@@ -108,11 +111,11 @@ public class ReviewServiceImpl implements ReviewService {
 
         return reviewRepository.findAll(pageable)
                 .map(review -> {
-                    UserDto userDto = userClient.getUserId(review.getUserId()).getData();
+                    UserDto userDto = userClient.getUserId(review.getUserId()).getData().getUser();
                     MovieDto movieDto = movieClient.getMovieId(review.getMovieId()).getData();
                     return ReviewResponseDto.fromEntity(
                             review,
-                            userDto.getUsername(),
+                            userDto.getUserId(),
                             movieDto.getTitle()
                     );
                 });
@@ -120,14 +123,14 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Override
     @Transactional
-    public Page<ReviewResponseDto> findReviews(String genre, Integer rating, String sort, Pageable pageable) {
+    public Page<ReviewResponseDto> findReviews(String genre, Double rating, String sort, Pageable pageable) {
         return reviewRepository.findAll(pageable)
                 .map(review -> {
-                    UserDto userDto = userClient.getUserId(review.getUserId()).getData();
+                    UserDto userDto = userClient.getUserId(review.getUserId()).getData().getUser();
                     MovieDto movieDto = movieClient.getMovieId(review.getMovieId()).getData();
                     return ReviewResponseDto.fromEntity(
                             review,
-                            userDto.getUsername(),
+                            userDto.getUserId(),
                             movieDto.getTitle()
                     );
                 });
@@ -143,7 +146,7 @@ public class ReviewServiceImpl implements ReviewService {
         // 소유권 확인
         UserDto userDto;
         try {
-            userDto = userClient.getUserId(review.getUserId()).getData();
+            userDto = userClient.getUserId(review.getUserId()).getData().getUser();
         } catch (Exception ex) {
             throw new IllegalArgumentException("사용자 정보를 가져올 수 없습니다: " + userName, ex);
         }
@@ -167,7 +170,7 @@ public class ReviewServiceImpl implements ReviewService {
         } catch (Exception ex) {
             throw new IllegalArgumentException("영화 정보를 가져올 수 없습니다: id=" + updated.getMovieId(), ex);
         }
-        return ReviewResponseDto.fromEntity(updated, userDto.getUsername(), movieDto.getTitle());
+        return ReviewResponseDto.fromEntity(updated, userDto.getUserId(), movieDto.getTitle());
     }
 
     @Override
@@ -179,7 +182,7 @@ public class ReviewServiceImpl implements ReviewService {
         // 소유권 확인
         UserDto userDto;
         try {
-            userDto = userClient.getUserId(String.valueOf(userId)).getData();
+            userDto = userClient.getUserId(String.valueOf(userId)).getData().getUser();
         } catch (Exception ex) {
             throw new IllegalArgumentException("사용자 정보를 가져올 수 없습니다: " + userId, ex);
         }

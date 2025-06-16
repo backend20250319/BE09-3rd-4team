@@ -16,7 +16,7 @@ public class ReviewResponseDto {
     private Long movieId;            // movie 서비스에서 가져온 정보
     private String movieTitle;    // movie 서비스에서 가져온 정보
     private String content;
-    private Integer rating;
+    private Double rating;
     private LocalDateTime createdAt;
     private Long likeCount;
 
