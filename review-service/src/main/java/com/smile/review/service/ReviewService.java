@@ -34,7 +34,7 @@ public interface ReviewService {
 
     public default ReviewResponseDto createReview(String userId, Long movieId, String content, double rating) {
         // 1) 사용자 검증
-        UserDto userDto = null;//userClient.getUserId(userId).getData();
+        UserDto userDto = userClient.getUserId(userId).getData();
 
         // 2) 영화 검증
         MovieDto movieDto = movieClient.getMovieId(movieId).getData();
