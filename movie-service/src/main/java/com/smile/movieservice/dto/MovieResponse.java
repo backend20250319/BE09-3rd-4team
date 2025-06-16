@@ -12,7 +12,7 @@ public class MovieResponse {
     private Long id;
     private String title;
     private String description;
-    private String ageRating;          // ✅ 시청 연령 필드 추가
+    private String ageRating;
     private List<String> genres;
     private Double rating;
     private String releaseDate;

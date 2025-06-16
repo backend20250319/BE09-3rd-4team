@@ -10,13 +10,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 // @FeignClient(name = "user-service", url = "http://localhost:8000", configuration = FeignClientConfig.class)
 // 2. 내부에서 user-service를 호출하는 상황
 @FeignClient(name = "smile-movie-service", configuration = FeignClientConfig.class)
-public interface UserClient {
+public interface ReviewClient {
 
     // User Service에서 사용자 상태나 간단한 정보를 조회하는 API
     // 1. Gateway를 호출하는 상황
 //    @GetMapping("/api/v1/user-service/users/{userId}/grade")
 
     // 2. 내부에서 user-service를 호출하는 상황
-    @GetMapping("/users/{userId}/grade")
-    ApiResponse<String> getUserGrade(@PathVariable("userId") Long userId);
+    @GetMapping("/reviews/{reviewId}")
+    ApiResponse<Double> getMovieId(@PathVariable("movieId") Long movieId);
 }
