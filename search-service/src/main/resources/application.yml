@@ -1,5 +1,5 @@
 server:
-  port: 0                            # 0?? ?? ?? ??? ?? ?? ??
+  port: 0
 
 eureka:
   instance:
@@ -12,7 +12,7 @@ eureka:
 
 spring:
   application:
-    name: search-service              # Eureka? ??? ??? ??
+    name: search-service
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://mysql.coffit.xyz:3322/moviedb
@@ -25,8 +25,18 @@ spring:
     properties:
       hibernate:
         format_sql: true
+  config:
+    import:
+      - classpath:/bootstrap.yml
 
+mybatis:
+  configuration:
+    map-underscore-to-camel-case: true
+  mapper-locations: mappers/**/*.xml
+  type-aliases-package: com.smile.movie-service.query.dto
+
+  # Config Server? ?? ??
 #jwt:
-#  secret: <??? Base64 ???? ??? ?>
-#  expiration: 1800000          # access token ??(???)
-#  refresh-expiration: 604800000  # refresh token ??(???)
+#  secret: LH9QZL8upsPBfuDY+Dkb1kT9DZIIUSuA2u4O6Lfi3mkEfeWtETpVTcR/8SMZdJWn/xNTuCQBE6rBvDXgnVmscQ==
+#  expiration: 1800000
+#  refresh-expiration: 604800000
