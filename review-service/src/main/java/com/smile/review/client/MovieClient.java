@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 @FeignClient(name = "movie-service", configuration = FeignClientConfig.class)
 public interface MovieClient {
 
-    @GetMapping("/movie/{movieId}/")
+
+    @GetMapping("/movies/fetchAll/{movieId}")
     ApiResponse<MovieDto> getMovieId(@PathVariable("movieId") Long movieId);
 }

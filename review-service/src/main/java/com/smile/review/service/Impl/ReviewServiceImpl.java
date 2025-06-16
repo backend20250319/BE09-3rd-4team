@@ -93,12 +93,12 @@ public class ReviewServiceImpl implements ReviewService {
         // 영화 정보 조회
         MovieDto movieDto;
         try {
-            movieDto = movieClient.getMovieId(movieId).getData();
+            movieDto = movieClient.getMovieId(review.getMovieId()).getData();
         } catch (Exception ex) {
             throw new IllegalArgumentException("영화 정보를 가져올 수 없습니다: id=" + review.getMovieId(), ex);
         }
 
-        return ReviewResponseDto.fromEntity(review, userDto.getUserId(), movieDto.getTitle());
+        return ReviewResponseDto.fromEntity(review, userDto.getUserName(), movieDto.getTitle());
     }
 
     @Override
