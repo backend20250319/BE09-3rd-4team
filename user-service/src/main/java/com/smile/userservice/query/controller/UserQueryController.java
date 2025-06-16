@@ -25,11 +25,11 @@ public class UserQueryController {
         return ResponseEntity.ok(ApiResponse.success(response));
     }
 
-    // id를 통한 사용자 정보 조회
+    // userId를 통한 사용자 정보 조회
     @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/users/{userId}")
-    public ResponseEntity<ApiResponse<UserDetailsResponse>> getUser(@PathVariable("userId") Long id) {
-        UserDetailsResponse response = userQueryService.getUserDetail(id);
+    public ResponseEntity<ApiResponse<UserDetailsResponse>> getUser(@PathVariable("userId") String userId) {
+        UserDetailsResponse response = userQueryService.getUserInfo(userId);
         return ResponseEntity.ok(ApiResponse.success(response));
     }
 
