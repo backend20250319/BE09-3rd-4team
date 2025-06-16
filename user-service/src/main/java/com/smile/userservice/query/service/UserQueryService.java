@@ -18,11 +18,11 @@ public class UserQueryService {
     private final PasswordEncoder passwordEncoder;
 
     public UserDetailsResponse getUserDetail(String userId) {
-        System.out.println("userId = " + userId);
         UserDTO user = Optional.ofNullable(
                 userMapper.findUserById(userId)
         ).orElseThrow(() -> new RuntimeException("사용자 정보를 찾지 못했습니다."));
 
+        System.out.println("userId = " + user.getUserId());
         return UserDetailsResponse.builder().user(user).build();
     }
 

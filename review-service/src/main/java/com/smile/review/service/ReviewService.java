@@ -34,18 +34,18 @@ public interface ReviewService {
 
     public default ReviewResponseDto createReview(String userId, Long movieId, String content, double rating) {
         // 1) 사용자 검증
-        UserDto userDto = userClient.getUserId(userId).getData();
+        UserDto userDto = userClient.getUserId(userId).getData().getUser();
 
         // 2) 영화 검증
         MovieDto movieDto = movieClient.getMovieId(movieId).getData();
-        if (movieDto == null || movieDto.getMovieId() == null) {
+        if (movieDto == null || movieDto.getId() == null) {
             throw new IllegalArgumentException("유효하지 않은 영화 ID");
         }
 
         // 3) 리뷰 엔티티 저장 로직
         Review review = new Review();
         review.setUserId(userDto.getUserId());
-        review.setMovieId(movieDto.getMovieId());
+        review.setMovieId(movieDto.getId());
         review.setContent(content);
         review.setRating(rating);
         review.setCreatedAt(LocalDateTime.now());

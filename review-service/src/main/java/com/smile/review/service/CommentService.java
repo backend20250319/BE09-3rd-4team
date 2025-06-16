@@ -50,7 +50,7 @@ public class CommentService {
                 .content(dto.getContent())
                 .build();
         Comment saved = commentRepository.save(comment);
-        UserDto userDto = userClient.getUserId(userId).getData();
+        UserDto userDto = userClient.getUserId(userId).getData().getUser();
         return CommentResponseDto.fromEntity(saved, userDto);
     }
 
@@ -61,7 +61,7 @@ public class CommentService {
         Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdAt"));
         return commentRepository.findByReview_ReviewId(reviewId, pageable)
                 .map(comment -> {
-                    UserDto userDto = userClient.getUserId(comment.getUserId()).getData();
+                    UserDto userDto = userClient.getUserId(comment.getUserId()).getData().getUser();
                     return CommentResponseDto.fromEntity(comment, userDto);
                 });
     }
@@ -83,7 +83,7 @@ public class CommentService {
         // 4) 사용자 정보 조회
         UserDto userDto;
         try {
-            userDto = userClient.getUserId(userName).getData();
+            userDto = userClient.getUserId(userName).getData().getUser();
         } catch (Exception ex) {
             throw new IllegalArgumentException("사용자 정보를 가져올 수 없습니다: " + userName, ex);
         }
@@ -120,7 +120,7 @@ public class CommentService {
         // 4) 사용자 정보 조회
         UserDto userDto;
         try {
-            userDto = userClient.getUserId(userName).getData();
+            userDto = userClient.getUserId(userName).getData().getUser();
         } catch (Exception ex) {
             throw new IllegalArgumentException("사용자 정보를 가져올 수 없습니다: " + userName, ex);
         }

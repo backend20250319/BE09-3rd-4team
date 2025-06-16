@@ -42,10 +42,9 @@ public class ReviewServiceImpl implements ReviewService {
 
 
         // 사용자 조회
-        ApiResponse<UserDto> userDtoApiResponse = userClient.getUserId(userId);
-        UserDto userDto = userDtoApiResponse.getData();
+        UserDto userDto;
         try {
-            userDto = userClient.getUserId(userId).getData();
+            userDto = userClient.getUserId(userId).getData().getUser();
         } catch (Exception ex) {
             throw new IllegalArgumentException("사용자 정보를 가져올 수 없습니다: " + userId, ex);
         }
@@ -60,7 +59,7 @@ public class ReviewServiceImpl implements ReviewService {
         } catch (Exception ex) {
             throw new IllegalArgumentException("영화 정보를 가져올 수 없습니다: movieId=" + movieId, ex);
         }
-        if (movieDto == null || movieDto.getMovieId() == null) {
+        if (movieDto == null || movieDto.getId() == null) {
             throw new IllegalArgumentException("유효하지 않은 영화 ID: " + movieId);
         }
 
@@ -86,7 +85,7 @@ public class ReviewServiceImpl implements ReviewService {
         // 작성자 정보 조회
         UserDto userDto;
         try {
-            userDto = userClient.getUserId(userId).getData();
+            userDto = userClient.getUserId(userId).getData().getUser();
         } catch (Exception ex) {
             throw new IllegalArgumentException("사용자 정보를 가져올 수 없습니다: id=" + review.getUserId(), ex);
         }
@@ -112,7 +111,7 @@ public class ReviewServiceImpl implements ReviewService {
 
         return reviewRepository.findAll(pageable)
                 .map(review -> {
-                    UserDto userDto = userClient.getUserId(review.getUserId()).getData();
+                    UserDto userDto = userClient.getUserId(review.getUserId()).getData().getUser();
                     MovieDto movieDto = movieClient.getMovieId(review.getMovieId()).getData();
                     return ReviewResponseDto.fromEntity(
                             review,
@@ -127,7 +126,7 @@ public class ReviewServiceImpl implements ReviewService {
     public Page<ReviewResponseDto> findReviews(String genre, Double rating, String sort, Pageable pageable) {
         return reviewRepository.findAll(pageable)
                 .map(review -> {
-                    UserDto userDto = userClient.getUserId(review.getUserId()).getData();
+                    UserDto userDto = userClient.getUserId(review.getUserId()).getData().getUser();
                     MovieDto movieDto = movieClient.getMovieId(review.getMovieId()).getData();
                     return ReviewResponseDto.fromEntity(
                             review,
@@ -147,7 +146,7 @@ public class ReviewServiceImpl implements ReviewService {
         // 소유권 확인
         UserDto userDto;
         try {
-            userDto = userClient.getUserId(review.getUserId()).getData();
+            userDto = userClient.getUserId(review.getUserId()).getData().getUser();
         } catch (Exception ex) {
             throw new IllegalArgumentException("사용자 정보를 가져올 수 없습니다: " + userName, ex);
         }
@@ -183,7 +182,7 @@ public class ReviewServiceImpl implements ReviewService {
         // 소유권 확인
         UserDto userDto;
         try {
-            userDto = userClient.getUserId(String.valueOf(userId)).getData();
+            userDto = userClient.getUserId(String.valueOf(userId)).getData().getUser();
         } catch (Exception ex) {
             throw new IllegalArgumentException("사용자 정보를 가져올 수 없습니다: " + userId, ex);
         }

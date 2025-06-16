@@ -72,10 +72,10 @@ public class ReviewController {
     }
 
     /**
-     * 특정 리뷰 조회
+     * 특정 리뷰 조회 ok
      * GET /reviews/{reviewId}
      */
-    @GetMapping("/{reviewId}/{id}")
+    @GetMapping("/{reviewId}/{movieId}")
     public ResponseEntity<ReviewResponseDto> getReview(
             @PathVariable Long reviewId, @AuthenticationPrincipal String userId, @PathVariable Long movieId ) {
         ReviewResponseDto dto = reviewService.getReviewId(reviewId,userId,movieId);
