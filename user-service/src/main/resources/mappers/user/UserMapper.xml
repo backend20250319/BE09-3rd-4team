@@ -30,11 +30,11 @@
                     role = #{role},
                 </if>
             </set>
-        WHERE id = #{id}
+        WHERE user_id = #{userId}
     </update>
 
     <delete id="deleteUserById">
-        DELETE FROM users WHERE id = #{id}
+        DELETE FROM users WHERE user_id = #{userId}
     </delete>
 
 </mapper>
