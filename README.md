@@ -40,22 +40,22 @@
 | 유지은   | `리뷰 서비스(review-service)`     | 리뷰 작성/조회                    |
 | 박준서   | `추천 서비스(recommend-service)`  | 맞춤형 추천 기능                  |
 | 이나영   | `유저 서비스(user-service)`       | 회원가입/로그인                   |
-| 공통     | `서버(gateway-service)`    | API 진입점                        |
-| 공통     | `서버(config-service)`     | 공통 설정 관리                    |
-| 공통     | `서버(discovery-service)`  | 서비스 등록/탐색 (Eureka)         |
+| 공통     | `API Gateway(gateway-service)`    | API 진입점                        |
+| 공통     | `Config 서버(config-service)`     | 공통 설정 관리                    |
+| 공통     | `Eureka 서버(discovery-service)`  | 서비스 등록/탐색 (Eureka)         |
 
 ## 마이크로서비스 구조
 
 | 모듈명              | 기능 역할                                                    |
 |---------------------|------------------------------------------------------------|
-| config-service      | Spring Cloud Config 서버, 공통/중앙 설정 관리              |
-| discovery-service   | Eureka 서비스 디스커버리, 마이크로서비스 등록/탐색          |
-| gateway-service     | API Gateway, 라우팅/필터링/인증 등 API 진입점 허브 역할     |
-| user-service        | 회원가입/로그인, 사용자 계정 관리                           |
-| movie-service       | 영화 목록 및 상세 정보 관리, 영화 등록/수정/삭제            |
-| review-service      | 영화 리뷰 작성/조회/삭제/수정 기능 제공                     |
-| search-service      | 영화 검색/필터, 다양한 조건으로 영화 목록 조회              |
-| recommend-service   | 사용자/리뷰/별점 기반 맞춤형 영화 추천 기능                |
+| `config-service`      | Spring Cloud Config 서버, 공통/중앙 설정 관리              |
+| `discovery-service`   | Eureka 서비스 디스커버리, 마이크로서비스 등록/탐색          |
+| `gateway-service`     | API Gateway, 라우팅/필터링/인증 등 API 진입점 허브 역할     |
+| `user-service`        | 회원가입/로그인, 사용자 계정 관리                           |
+| `movie-service`       | 영화 목록 및 상세 정보 관리, 영화 등록/수정/삭제            |
+| `review-service`      | 영화 리뷰 작성/조회/삭제/수정 기능 제공                     |
+| `search-service`      | 영화 검색/필터, 다양한 조건으로 영화 목록 조회              |
+| `recommend-service`   | 사용자/리뷰/별점 기반 맞춤형 영화 추천 기능                |
 
 ## 기술 스택
 
