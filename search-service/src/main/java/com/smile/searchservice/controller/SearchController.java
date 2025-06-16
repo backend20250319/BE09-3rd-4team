@@ -215,7 +215,7 @@ public class SearchController {
     }
 
     // 연령별 + 장르별 동시 필터
-    // GET /search/movies/age-genre?rating=15세관람가&genre=액션
+    // GET /search/movies/age-genre?rating=15세이상관람가&genre=액션
     @GetMapping("/age-genre")
     public ApiResponse<List<SearchResponse>> getMoviesByAgeAndGenre(
             @RequestParam String rating,
