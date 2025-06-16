@@ -12,7 +12,6 @@ import com.smile.review.dto.responsedto.ReviewResponseDto;
 
 
 import com.smile.review.repository.review.ReviewRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
