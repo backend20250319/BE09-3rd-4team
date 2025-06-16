@@ -1,5 +1,5 @@
 
-package com.smile.review.Impl;
+package com.smile.review.service.Impl;
 
 import com.smile.review.client.MovieClient;
 import com.smile.review.client.UserClient;
@@ -13,6 +13,7 @@ import com.smile.review.dto.responsedto.ReviewResponseDto;
 import com.smile.review.repository.ReviewRepository;
 
 import com.smile.review.service.ReviewService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -25,21 +26,13 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 
 @Service
+@RequiredArgsConstructor
 public class ReviewServiceImpl implements ReviewService {
 
     private final ReviewRepository reviewRepository;
     private final UserClient userClient;
     private final MovieClient movieClient;
 
-    @Autowired
-    public ReviewServiceImpl(ReviewRepository reviewRepository,
-                             UserClient userClient,
-                             MovieClient movieClient) {
-
-        this.reviewRepository = reviewRepository;
-        this.userClient = userClient;
-        this.movieClient = movieClient;
-    }
 
     @Override
     @Transactional

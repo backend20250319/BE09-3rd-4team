@@ -22,7 +22,7 @@ public class ReviewResponseDto {
 
     public static ReviewResponseDto fromEntity(Review review, String userName, String movieTitle) {
         return ReviewResponseDto.builder()
-                .reviewId(review.getId())
+                .reviewId(review.getReviewId())
                 .userId(review.getUserId())
                 .userName(userName)
                 .movieId(review.getMovieId())

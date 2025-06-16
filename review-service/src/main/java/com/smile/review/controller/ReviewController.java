@@ -1,18 +1,17 @@
 package com.smile.review.controller;
 
 
-import com.smile.review.client.dto.UserDto;
 import com.smile.review.dto.requestdto.ReviewRequestDto;
 import com.smile.review.dto.responsedto.ReviewResponseDto;
 import com.smile.review.service.CommentService;
 import com.smile.review.service.LikeService;
-import com.smile.review.service.ReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -42,12 +41,12 @@ public class ReviewController {
      */
     @PostMapping
     public ResponseEntity<ReviewResponseDto> createReview(@RequestBody ReviewRequestDto req
-         , UserDto userDto
+         , @AuthenticationPrincipal String username
     ) {
-
-            return ResponseEntity.ok(reviewService.createReview(
-                    req.getUserId(), req.getMovieId(), req.getContent(), req.getRating()
-            ));
+             System.out.println("Controller 진입 username: " + username);
+        return ResponseEntity.ok(reviewService.createReview(
+                username, req.getMovieId(), req.getContent(), req.getRating()
+        ));
 
     }
 
@@ -75,9 +74,9 @@ public class ReviewController {
      * 특정 리뷰 조회
      * GET /reviews/{reviewId}
      */
-    @GetMapping("/{reviewId}")
+    @GetMapping("/{reviewId}/{movieId}")
     public ResponseEntity<ReviewResponseDto> getReview(
-            @PathVariable Long reviewId, String userId, Long movieId) {
+            @PathVariable Long reviewId, @AuthenticationPrincipal String userId, Long movieId) {
 
         ReviewResponseDto dto = reviewService.getReviewId(reviewId,userId,movieId);
         return ResponseEntity.ok(dto);

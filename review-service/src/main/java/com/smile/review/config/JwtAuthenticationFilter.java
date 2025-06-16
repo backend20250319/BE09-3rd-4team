@@ -46,9 +46,16 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
             UsernamePasswordAuthenticationToken authentication =
                     new UsernamePasswordAuthenticationToken(username, null, authorities);
-
             SecurityContextHolder.getContext().setAuthentication(authentication);
+
+
+            // ★★★ 인증 성공 로그 추가!
+            System.out.println("[JWT] 인증 성공! username=" + username + " roles=" + roles + " authorities=" + authorities);
+        } else {
+            // ★★★ 인증 실패 로그 추가!
+            System.out.println("[JWT] 인증 실패 or 토큰 없음. token=" + token);
         }
+
         filterChain.doFilter(request, response);
 
     }

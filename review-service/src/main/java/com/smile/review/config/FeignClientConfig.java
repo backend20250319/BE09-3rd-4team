@@ -12,17 +12,14 @@ public class FeignClientConfig {
     @Bean
     public RequestInterceptor requestInterceptor() {
         return requestTemplate -> {
-
-            /* 현재 요청의 Http Servlet Request 를 가져옴 */
-            ServletRequestAttributes requestAttributes =
+            ServletRequestAttributes attributes =
                     (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
-
-            if(requestAttributes != null) {
-                // 2. 내부 user service를 요청하는 상황
-                String userId = requestAttributes.getRequest().getHeader("X-User-Id");
-                String role = requestAttributes.getRequest().getHeader("X-User-Role");
-                requestTemplate.header("X-User-Id", userId);
-                requestTemplate.header("X-User-Role", role);
+            if (attributes != null) {
+                String authorization = attributes.getRequest().getHeader("Authorization");
+                System.out.println(">>> Feign Authorization Header : " + authorization); // 로그로 꼭 확인!
+                if (authorization != null) {
+                    requestTemplate.header("Authorization", authorization);
+                }
             }
         };
     }

@@ -23,10 +23,9 @@ public class SecurityConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/auth/**", "/login" ,"/signup","/reviews/**", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/reviews/**").authenticated() // 리뷰 등록 등은 인증 필요
-                        .requestMatchers(HttpMethod.GET, "/reviews/**").permitAll()     // 리뷰 목록/조회는 공개
-                        .anyRequest().authenticated()
+                        .requestMatchers(HttpMethod.POST, "/reviews/**").authenticated()   // 인증 필요
+                        .requestMatchers("/auth/**", "/login", "/signup", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
+                        .anyRequest().permitAll()
                 )
                 .addFilterBefore(
                         new JwtAuthenticationFilter(jwtTokenProvider),

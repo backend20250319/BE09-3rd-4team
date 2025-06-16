@@ -30,6 +30,7 @@ public class JwtTokenProvider {
 
     @PostConstruct
     public void init() {
+        System.out.println(">>> JWT SECRET: " + jwtSecret);
         byte[] keyBytes = Base64.getDecoder().decode(jwtSecret.getBytes());
         secretKey = Keys.hmacShaKeyFor(keyBytes);
     }
@@ -109,7 +110,7 @@ public class JwtTokenProvider {
 
     public String resolveToken(HttpServletRequest request) {
         String bearer = request.getHeader("Authorization");
-        if (bearer != null && bearer.startsWith("Bearer ")) {
+        if (bearer != null && bearer.startsWith("Bearer")) {
             return bearer.substring(7);
         }
         return null;

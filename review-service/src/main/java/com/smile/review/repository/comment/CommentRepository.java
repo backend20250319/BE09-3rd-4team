@@ -9,12 +9,12 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
     /**
      * 특정 리뷰(reviewId)에 속한 댓글 페이징 조회
      */
-    Page<Comment> findByReviewId(Long reviewId, Pageable pageable);
+    Page<Comment> findByReview_ReviewId(Long reviewId, Pageable pageable);
 
     /**
      * 특정 리뷰의 댓글 개수 조회
      */
-    Long countByReviewId(Long reviewId);
+    Long countByReview_ReviewId(Long reviewId);
 
     /**
      * 예: 특정 사용자 작성 댓글만 조회

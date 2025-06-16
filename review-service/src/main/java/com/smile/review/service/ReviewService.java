@@ -20,7 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 
-@Service
+
 public interface ReviewService {
 
     ReviewResponseDto getReviewId(Long reviewId, String userId, Long movieId);

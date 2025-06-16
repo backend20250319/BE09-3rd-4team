@@ -31,4 +31,4 @@ mybatis:
   configuration:
     map-underscore-to-camel-case: true
   mapper-locations: mappers/**/*.xml
-  type-aliases-package: com.smile.user-service.query.dto
+  type-aliases-package: com.smile.userservice.query.dto

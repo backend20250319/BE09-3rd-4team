@@ -18,7 +18,7 @@ public class Review {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "review_id")
-    private Long id;
+    private Long reviewId;
 
     // FK로 user_id를 직접 관리
     @Column(name = "user_id", nullable = false)
@@ -55,7 +55,7 @@ public class Review {
     @Override
     public String toString() {
         return "Review{" +
-                "id=" + id +
+                "reviewId=" + reviewId +
                 ", userId=" + userId +
                 ", movieId=" + movieId +
                 ", content='" + content + '\'' +
