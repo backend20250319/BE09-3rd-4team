@@ -6,8 +6,9 @@ import com.smile.review.domain.Comment;
 import com.smile.review.domain.Review;
 import com.smile.review.dto.requestdto.CommentRequestDto;
 import com.smile.review.dto.responsedto.CommentResponseDto;
-import com.smile.review.repository.ReviewRepository;
+
 import com.smile.review.repository.comment.CommentRepository;
+import com.smile.review.repository.review.ReviewRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 

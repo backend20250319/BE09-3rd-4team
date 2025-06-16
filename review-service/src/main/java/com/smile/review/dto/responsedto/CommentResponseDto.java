@@ -27,7 +27,7 @@ public class CommentResponseDto {
         return CommentResponseDto.builder()
                 .commentId(c.getId())
                 .userId(u.getUserId())
-                .userName(u.getUsername())
+                .userName(u.getUserId())
                 .content(c.getContent())
                 .createdAt(c.getCreatedAt())
                 .updatedAt(c.getUpdatedAt())

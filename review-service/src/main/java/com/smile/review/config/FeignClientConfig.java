@@ -3,6 +3,7 @@ package com.smile.review.config;
 import feign.RequestInterceptor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
@@ -15,11 +16,10 @@ public class FeignClientConfig {
             ServletRequestAttributes attributes =
                     (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
             if (attributes != null) {
-                String authorization = attributes.getRequest().getHeader("Authorization");
-                System.out.println(">>> Feign Authorization Header : " + authorization); // 로그로 꼭 확인!
-                if (authorization != null) {
-                    requestTemplate.header("Authorization", authorization);
-                }
+                String userId = attributes.getRequest().getHeader("X-User-Id");
+                String role = attributes.getRequest().getHeader("X-User-Role");
+                requestTemplate.header("X-User-Id", userId);
+                requestTemplate.header("X-User-Role", role);
             }
         };
     }

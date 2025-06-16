@@ -10,8 +10,9 @@ import com.smile.review.domain.Review;
 
 import com.smile.review.dto.requestdto.ReviewRequestDto;
 import com.smile.review.dto.responsedto.ReviewResponseDto;
-import com.smile.review.repository.ReviewRepository;
 
+
+import com.smile.review.repository.review.ReviewRepository;
 import com.smile.review.service.ReviewService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,9 +35,12 @@ public class ReviewServiceImpl implements ReviewService {
     private final MovieClient movieClient;
 
 
+
     @Override
     @Transactional
-    public ReviewResponseDto createReview(String userId, Long movieId, String content , int rating) {
+    public ReviewResponseDto createReview(String userId, Long movieId, String content , double rating) {
+
+
         // 사용자 조회
         ApiResponse<UserDto> userDtoApiResponse = userClient.getUserId(userId);
         UserDto userDto = userDtoApiResponse.getData();
@@ -70,7 +74,7 @@ public class ReviewServiceImpl implements ReviewService {
         Review saved = reviewRepository.save(review);
 
         // DTO 변환
-        return ReviewResponseDto.fromEntity(saved, userDto.getUsername(), movieDto.getTitle());
+        return ReviewResponseDto.fromEntity(saved, userDto.getUserId(), movieDto.getTitle());
     }
 
     @Override
@@ -94,7 +98,7 @@ public class ReviewServiceImpl implements ReviewService {
             throw new IllegalArgumentException("영화 정보를 가져올 수 없습니다: id=" + review.getMovieId(), ex);
         }
 
-        return ReviewResponseDto.fromEntity(review, userDto.getUsername(), movieDto.getTitle());
+        return ReviewResponseDto.fromEntity(review, userDto.getUserId(), movieDto.getTitle());
     }
 
     @Override
@@ -112,7 +116,7 @@ public class ReviewServiceImpl implements ReviewService {
                     MovieDto movieDto = movieClient.getMovieId(review.getMovieId()).getData();
                     return ReviewResponseDto.fromEntity(
                             review,
-                            userDto.getUsername(),
+                            userDto.getUserId(),
                             movieDto.getTitle()
                     );
                 });
@@ -120,14 +124,14 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Override
     @Transactional
-    public Page<ReviewResponseDto> findReviews(String genre, Integer rating, String sort, Pageable pageable) {
+    public Page<ReviewResponseDto> findReviews(String genre, Double rating, String sort, Pageable pageable) {
         return reviewRepository.findAll(pageable)
                 .map(review -> {
                     UserDto userDto = userClient.getUserId(review.getUserId()).getData();
                     MovieDto movieDto = movieClient.getMovieId(review.getMovieId()).getData();
                     return ReviewResponseDto.fromEntity(
                             review,
-                            userDto.getUsername(),
+                            userDto.getUserId(),
                             movieDto.getTitle()
                     );
                 });
@@ -167,7 +171,7 @@ public class ReviewServiceImpl implements ReviewService {
         } catch (Exception ex) {
             throw new IllegalArgumentException("영화 정보를 가져올 수 없습니다: id=" + updated.getMovieId(), ex);
         }
-        return ReviewResponseDto.fromEntity(updated, userDto.getUsername(), movieDto.getTitle());
+        return ReviewResponseDto.fromEntity(updated, userDto.getUserId(), movieDto.getTitle());
     }
 
     @Override

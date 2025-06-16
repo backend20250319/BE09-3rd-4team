@@ -1,5 +1,4 @@
-// com.smile.review.repository.ReviewRepository.java
-package com.smile.review.repository;
+package com.smile.review.repository.review;
 
 import com.smile.review.domain.Review;
 import org.springframework.data.domain.Page;
@@ -22,12 +21,12 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
     /**
      * 평점(rating) 조건 조회: rating이 정확히 특정 값인 경우
      */
-    Page<Review> findByRating(Integer rating, Pageable pageable);
+    Page<Review> findByRating(Double rating, Pageable pageable);
 
     /**
      * 평점 이상(rating >= value) 조회
      */
-    Page<Review> findByRatingGreaterThanEqual(Integer rating, Pageable pageable);
+    Page<Review> findByRatingGreaterThanEqual(Double rating, Pageable pageable);
 
     /**
      * 작성자(userId) 기준 조회

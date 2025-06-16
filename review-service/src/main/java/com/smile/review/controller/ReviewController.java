@@ -5,6 +5,7 @@ import com.smile.review.dto.requestdto.ReviewRequestDto;
 import com.smile.review.dto.responsedto.ReviewResponseDto;
 import com.smile.review.service.CommentService;
 import com.smile.review.service.LikeService;
+import com.smile.review.service.ReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -41,11 +42,11 @@ public class ReviewController {
      */
     @PostMapping
     public ResponseEntity<ReviewResponseDto> createReview(@RequestBody ReviewRequestDto req
-         , @AuthenticationPrincipal String username
+         , @AuthenticationPrincipal String userId
     ) {
-             System.out.println("Controller 진입 username: " + username);
+             System.out.println("Controller 진입 username: " + userId);
         return ResponseEntity.ok(reviewService.createReview(
-                username, req.getMovieId(), req.getContent(), req.getRating()
+                userId, req.getMovieId(), req.getContent(), req.getRating()
         ));
 
     }
@@ -62,7 +63,7 @@ public class ReviewController {
     @GetMapping
     public ResponseEntity<Page<ReviewResponseDto>> listReviews(
             @RequestParam(value = "genre", required = false) String genre,
-            @RequestParam(value = "rating", required = false) Integer rating,
+            @RequestParam(value = "rating", required = false) Double rating,
             @RequestParam(value = "sort", required = false) String sort,
             @PageableDefault(size = 20, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable) {
 
@@ -76,7 +77,7 @@ public class ReviewController {
      */
     @GetMapping("/{reviewId}/{movieId}")
     public ResponseEntity<ReviewResponseDto> getReview(
-            @PathVariable Long reviewId, @AuthenticationPrincipal String userId, Long movieId) {
+            @PathVariable Long reviewId, @AuthenticationPrincipal String userId,Long movieId ) {
 
         ReviewResponseDto dto = reviewService.getReviewId(reviewId,userId,movieId);
         return ResponseEntity.ok(dto);
