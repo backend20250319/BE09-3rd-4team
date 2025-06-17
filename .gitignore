@@ -38,4 +38,4 @@ out/
 
 ### Secret Configuration (Do not commit sensitive files) ###
 src/main/resources/application-secret.yml
-.DS_Store
+.DS_Store.idea/
