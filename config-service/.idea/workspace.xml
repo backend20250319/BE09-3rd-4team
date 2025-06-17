@@ -6,9 +6,16 @@
   <component name="ChangeListManager">
     <list default="true" id="ab14ebf7-9b7a-4aca-a6b0-a0e7e436913e" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.gradle/8.14.2/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.14.2/executionHistory/executionHistory.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/8.14.2/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.14.2/fileHashes/fileHashes.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/8.14.2/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.14.2/fileHashes/fileHashes.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../recommend-service/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../recommend-service/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../recommend-service/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/../recommend-service/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../recommend-service/src/main/java/com/smile/recommendservice/controller/RecommendationController.java" beforeDir="false" afterPath="$PROJECT_DIR$/../recommend-service/src/main/java/com/smile/recommendservice/controller/RecommendationController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../recommend-service/src/main/java/com/smile/recommendservice/repository/ReviewClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/../recommend-service/src/main/java/com/smile/recommendservice/repository/ReviewClient.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../recommend-service/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/../recommend-service/src/main/resources/application.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -53,9 +60,10 @@
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
     &quot;Spring Boot.ConfigServiceApplication.executor&quot;: &quot;Run&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;feature/movie&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;feature/recommend&quot;,
     &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/dev/BE09-3rd-4team/config-service&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
@@ -76,8 +84,8 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-jdk-9823dce3aa75-a94e463ab2e7-intellij.indexing.shared.core-IU-243.26053.27" />
-        <option value="bundled-js-predefined-d6986cc7102b-1632447f56bf-JavaScript-IU-243.26053.27" />
+        <option value="bundled-jdk-9823dce3aa75-fbdcb00ec9e3-intellij.indexing.shared.core-IU-251.26094.121" />
+        <option value="bundled-js-predefined-d6986cc7102b-b26f3e71634d-JavaScript-IU-251.26094.121" />
       </set>
     </attachedChunks>
   </component>
@@ -94,6 +102,8 @@
       <workItem from="1749807300193" duration="798000" />
       <workItem from="1749952407041" duration="217000" />
       <workItem from="1749952789832" duration="911000" />
+      <workItem from="1750144636247" duration="475000" />
+      <workItem from="1750145124565" duration="671000" />
     </task>
     <servers />
   </component>

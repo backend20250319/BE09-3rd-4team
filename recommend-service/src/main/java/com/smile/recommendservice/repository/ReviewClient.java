@@ -24,8 +24,4 @@ public interface ReviewClient {
     List<StarRatingDto> getByAgeAndGender(@PathVariable String ageGroup,
                                           @PathVariable String gender);
 
-    @GetMapping("/user/{userId}")
-    ApiResponse<List<StarRatingDto>> getByUserId(@PathVariable String userId);
-
-
 }

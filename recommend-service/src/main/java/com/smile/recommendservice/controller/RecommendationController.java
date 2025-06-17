@@ -21,7 +21,7 @@ public class RecommendationController {
     private final AgeBasedRecommendationService ageService;
     private final GenderBasedRecommendationService genderService;
     private final CombinedRecommendationService combinedService;
-    private final GenrePreferenceRecommendationService genreService;
+
 
     // 로그인 사용자 정보 추출 공통 메서드
     private UserDto getCurrentUser() {
@@ -60,9 +60,5 @@ public class RecommendationController {
         return ResponseEntity.ok(combinedService.recommend(new UserDetailsWrapper(user)));
     }
 
-    @GetMapping("/by-genre")
-    public ResponseEntity<RecommendationResultDto> recommendByGenre() {
-        UserDto user = getCurrentUser();
-        return ResponseEntity.ok(genreService.recommend(new UserDetailsWrapper(user)));
-    }
+
 }
