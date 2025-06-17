@@ -1,6 +1,7 @@
 package com.smile.review.controller;
 
 
+import com.smile.review.dto.StarRatingDto;
 import com.smile.review.dto.requestdto.ReviewRequestDto;
 import com.smile.review.dto.responsedto.ReviewResponseDto;
 import com.smile.review.service.CommentService;
@@ -14,6 +15,8 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 
 @RestController
@@ -80,6 +83,31 @@ public class ReviewController {
             @PathVariable Long reviewId, @AuthenticationPrincipal String userId, @PathVariable Long movieId ) {
         ReviewResponseDto dto = reviewService.getReviewId(reviewId,userId,movieId);
         return ResponseEntity.ok(dto);
+    }
+
+    /**
+     * 연령대 기반 리뷰 조회
+     */
+    @GetMapping("/stars/age-group/{ageGroup}")
+    public List<StarRatingDto> getByAgeGroup(@PathVariable String ageGroup) {
+        return reviewService.getByAgeGroup(ageGroup);
+    }
+
+    /**
+     * 성별 기반 리뷰 조회
+     */
+    @GetMapping("/stars/gender/{gender}")
+    public List<StarRatingDto> getByGender(@PathVariable String gender) {
+        return reviewService.getByGender(gender);
+    }
+
+    /**
+     * 연령대 + 성별 기반 리뷰 조회
+     */
+    @GetMapping("/stars/age-group/{ageGroup}/gender/{gender}")
+    public List<StarRatingDto> getByAgeAndGender(@PathVariable String ageGroup,
+                                                 @PathVariable String gender) {
+        return reviewService.getByAgeAndGender(ageGroup, gender);
     }
 
 

@@ -8,6 +8,7 @@ import com.smile.review.client.dto.UserDto;
 import com.smile.review.common.ApiResponse;
 import com.smile.review.domain.Review;
 
+import com.smile.review.dto.StarRatingDto;
 import com.smile.review.dto.requestdto.ReviewRequestDto;
 import com.smile.review.dto.responsedto.ReviewResponseDto;
 
@@ -25,6 +26,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -194,6 +198,76 @@ public class ReviewServiceImpl implements ReviewService {
         }
 
         reviewRepository.delete(review);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<StarRatingDto> getByAgeGroup(String ageGroup) {
+        return reviewRepository.findAll().stream()
+                .map(review -> {
+                    UserDto user = userClient.getUserId(review.getUserId()).getData().getUser();
+                    int age = user.getAge();  // 예: 25
+                    String group = getAgeGroup(age); // "20대"
+
+                    if (group.equals(ageGroup)) {
+                        return new StarRatingDto(review.getMovieId(), review.getRating());
+                    } else {
+                        return null; // 필터 대상 아님
+                    }
+                })
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<StarRatingDto> getByGender(String gender) {
+        return reviewRepository.findAll().stream()
+                .map(review -> {
+                    UserDto user = userClient.getUserId(review.getUserId()).getData().getUser();
+                    String userGender = user.getGender(); // "남성", "여성" 등
+
+                    if (gender.equalsIgnoreCase(userGender)) {
+                        return new StarRatingDto(review.getMovieId(), review.getRating());
+                    } else {
+                        return null;
+                    }
+                })
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<StarRatingDto> getByAgeAndGender(String ageGroup, String gender) {
+        return reviewRepository.findAll().stream()
+                .map(review -> {
+                    UserDto user = userClient.getUserId(review.getUserId()).getData().getUser();
+
+                    int age = user.getAge();
+                    String userAgeGroup = getAgeGroup(age);
+                    String userGender = user.getGender();
+
+                    if (userAgeGroup.equals(ageGroup) && gender.equalsIgnoreCase(userGender)) {
+                        return new StarRatingDto(review.getMovieId(), review.getRating());
+                    } else {
+                        return null;
+                    }
+                })
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList());
+    }
+
+    private String getAgeGroup(Integer age) {
+        if (age == null) return "기타";
+        if (age < 10) return "10대 미만";
+        if (age < 20) return "10대";
+        if (age < 30) return "20대";
+        if (age < 40) return "30대";
+        if (age < 50) return "40대";
+        if (age < 60) return "50대";
+        if (age < 70) return "60대";
+        return "70대 이상";
     }
 
 
