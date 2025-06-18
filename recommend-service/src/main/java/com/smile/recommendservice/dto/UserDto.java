@@ -16,6 +16,7 @@ public class UserDto {
     private String userName;
     private Integer age;
     private String gender;
+    private String role;
 
     // 유틸리티: 나이 → 연령대 변환
     public String getAgeGroup() {
