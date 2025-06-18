@@ -38,15 +38,16 @@ public class CommentService {
         this.userClient = userClient;
     }
 
-
     @Transactional
-    public CommentResponseDto createComment(String userId, CommentRequestDto dto) {
+    public CommentResponseDto addComment(Long reviewId, String userId, CommentRequestDto dto) {
         Review review = reviewRepository.findById(dto.getReviewId())
                 .orElseThrow(() -> new EntityNotFoundException("없는 리뷰 ID: " + dto.getReviewId()));
-
+        if (!reviewRepository.existsById(reviewId)) {
+            throw new IllegalArgumentException("해당 리뷰가 없습니다: " + reviewId);
+        }
         Comment comment = Comment.builder()
                 .review(review)
-                .userId(userId)
+                .userId(review.getUserId())
                 .content(dto.getContent())
                 .build();
         Comment saved = commentRepository.save(comment);
@@ -77,9 +78,10 @@ public class CommentService {
         Comment comment = commentRepository.findById(commentId)
                 .orElseThrow(() -> new IllegalArgumentException("해당 댓글이 없습니다: " + commentId));
         // 3) 댓글이 해당 리뷰에 속하는지 확인
-        if (!comment.getReview().equals(reviewId)) {
+        if (!comment.getReview().getReviewId().equals(reviewId)) {
             throw new IllegalArgumentException("댓글이 해당 리뷰에 속하지 않습니다. reviewId=" + reviewId + ", commentId=" + commentId);
         }
+
         // 4) 사용자 정보 조회
         UserDto userDto;
         try {
@@ -114,7 +116,7 @@ public class CommentService {
         Comment comment = commentRepository.findById(commentId)
                 .orElseThrow(() -> new IllegalArgumentException("해당 댓글이 없습니다: " + commentId));
         // 3) 댓글이 해당 리뷰에 속하는지 확인
-        if (!comment.getReview().equals(reviewId)) {
+        if (!comment.getReview().getReviewId().equals(reviewId)) {
             throw new IllegalArgumentException("댓글이 해당 리뷰에 속하지 않습니다. reviewId=" + reviewId + ", commentId=" + commentId);
         }
         // 4) 사용자 정보 조회
@@ -136,7 +138,4 @@ public class CommentService {
         commentRepository.delete(comment);
     }
 
-    public CommentResponseDto addComment(Long reviewId, String userName, CommentRequestDto dto) {
-        return null;
-    }
 }

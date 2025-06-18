@@ -8,8 +8,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
@@ -27,7 +29,7 @@ public class CommentController {
         this.commentService = commentService;
     }
 
-    /** 댓글 목록 조회 (예시) */
+    /** 댓글 목록 조회 ok  */
     @GetMapping
     public ResponseEntity<Page<CommentResponseDto>> listComments(
             @PathVariable Long reviewId,
@@ -37,7 +39,7 @@ public class CommentController {
     }
 
     /**
-     * 댓글 작성
+     * 댓글 작성 ok
      * POST /reviews/{reviewId}/comments
      */
     @PostMapping
@@ -45,8 +47,13 @@ public class CommentController {
             @PathVariable Long reviewId,
             @RequestBody CommentRequestDto dto,
             Principal principal) {
-        String userName = principal.getName();
-        CommentResponseDto created = commentService.addComment(reviewId, userName, dto);
+        String userId = (principal != null) ? principal.getName() : dto.getUserName();
+        CommentResponseDto created = commentService.addComment(reviewId, userId, dto);
+        if(created== null) {
+            System.out.println("댓글 생성 실패! reviewId=" + reviewId + ", userId=" + userId + ", content=" + dto.getContent());
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "댓글 생성에 실패했습니다. reviewId, userId, content를 확인하세요.");
+        }
+
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()   // "/reviews/{reviewId}/comments"
                 .path("/{id}")
@@ -57,7 +64,7 @@ public class CommentController {
 
 
     /**
-     * 댓글 수정
+     * 댓글 수정 ok
      * PUT /reviews/{reviewId}/comments/{commentId}
      */
     @PutMapping("/{commentId}")
@@ -72,7 +79,7 @@ public class CommentController {
     }
 
     /**
-     * 댓글 삭제
+     * 댓글 삭제 ok
      * DELETE /reviews/{reviewId}/comments/{commentId}
      */
     @DeleteMapping("/{commentId}")
