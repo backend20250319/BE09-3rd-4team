@@ -4,19 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ab14ebf7-9b7a-4aca-a6b0-a0e7e436913e" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.gradle/8.14.2/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.14.2/executionHistory/executionHistory.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/8.14.2/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.14.2/fileHashes/fileHashes.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/8.14.2/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.14.2/fileHashes/fileHashes.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../recommend-service/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../recommend-service/.idea/compiler.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../recommend-service/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/../recommend-service/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../recommend-service/src/main/java/com/smile/recommendservice/controller/RecommendationController.java" beforeDir="false" afterPath="$PROJECT_DIR$/../recommend-service/src/main/java/com/smile/recommendservice/controller/RecommendationController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../recommend-service/src/main/java/com/smile/recommendservice/repository/ReviewClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/../recommend-service/src/main/java/com/smile/recommendservice/repository/ReviewClient.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../recommend-service/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/../recommend-service/src/main/resources/application.yml" afterDir="false" />
-    </list>
+    <list default="true" id="ab14ebf7-9b7a-4aca-a6b0-a0e7e436913e" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -104,6 +92,7 @@
       <workItem from="1749952789832" duration="911000" />
       <workItem from="1750144636247" duration="475000" />
       <workItem from="1750145124565" duration="671000" />
+      <workItem from="1750169302773" duration="1374000" />
     </task>
     <servers />
   </component>
