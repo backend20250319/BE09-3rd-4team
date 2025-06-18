@@ -12,6 +12,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -37,7 +38,7 @@ public class ReviewController {
     }
 
     /**
-     * 리뷰 작성
+     * 리뷰 작성 ok
      * POST /reviews
      * @param reviewRequestDto { movieId, content, rating }
      * @param principal        로그인 사용자 정보
@@ -55,7 +56,7 @@ public class ReviewController {
     }
 
     /**
-     * 리뷰 목록 조회 (페이징·정렬·필터링)
+     * 리뷰 목록 조회 (페이징·정렬·필터링) ok
      * GET /reviews?genre=action&rating=4&sort=rating
      *
      * @param genre   (선택) 장르 필터
@@ -69,9 +70,16 @@ public class ReviewController {
             @RequestParam(value = "rating", required = false) Double rating,
             @RequestParam(value = "sort", required = false) String sort,
             @PageableDefault(size = 20, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable) {
-
-        Page<ReviewResponseDto> page = reviewService.findReviews(genre, rating, sort, pageable);
-        return ResponseEntity.ok(page);
+        try {
+            Page<ReviewResponseDto> page = reviewService.findReviews(genre, rating, sort, pageable);
+            return ResponseEntity.ok(page);
+        } catch (Exception e) {
+            // 로그 찍기
+            e.printStackTrace();
+            // 적절한 에러 메시지 반환
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Page.empty(pageable));
+        }
     }
 
     /**
@@ -84,6 +92,32 @@ public class ReviewController {
         ReviewResponseDto dto = reviewService.getReviewId(reviewId,userId,movieId);
         return ResponseEntity.ok(dto);
     }
+
+    /**
+     * 리뷰 수정 (PUT) ok
+     */
+    @PutMapping("/{reviewId}")
+    public ResponseEntity<ReviewResponseDto> editReview(
+            @PathVariable Long reviewId,
+            @RequestBody ReviewRequestDto req,
+            @AuthenticationPrincipal String userId
+    ) {
+        ReviewResponseDto result = reviewService.editReview(reviewId, userId, req);
+        return ResponseEntity.ok(result);
+    }
+
+    /**
+     * 리뷰 삭제 (DELETE) ok
+     */
+    @DeleteMapping("/{reviewId}")
+    public ResponseEntity<Void> deleteReview(
+            @PathVariable Long reviewId,
+            @AuthenticationPrincipal String userId
+    ) {
+        reviewService.deleteReview(reviewId, userId);
+        return ResponseEntity.noContent().build();
+    }
+
 
     /**
      * 연령대 기반 리뷰 조회

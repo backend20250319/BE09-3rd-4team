@@ -66,7 +66,7 @@ public interface ReviewService {
     ReviewResponseDto editReview(Long reviewId, String userName, ReviewRequestDto dto);
 
     @Transactional
-    void deleteReview(Long reviewId, Long userId);
+    void deleteReview(Long reviewId, String userId);
 
     List<StarRatingDto> getByAgeGroup(String ageGroup);
 
