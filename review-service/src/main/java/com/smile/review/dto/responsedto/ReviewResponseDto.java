@@ -18,7 +18,9 @@ public class ReviewResponseDto {
     private String content;
     private Double rating;
     private LocalDateTime createdAt;
+    private LocalDateTime updateAt;
     private Long likeCount;
+
 
     public static ReviewResponseDto fromEntity(Review review, String userName, String movieTitle) {
         return ReviewResponseDto.builder()
@@ -30,6 +32,7 @@ public class ReviewResponseDto {
                 .content(review.getContent())
                 .rating(review.getRating())
                 .createdAt(review.getCreatedAt())
+                .updateAt(review.getUpdatedAt())
                 .build();
     }
 }
