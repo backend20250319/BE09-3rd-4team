@@ -4,6 +4,7 @@ import com.smile.review.domain.ReviewLike;
 
 import com.smile.review.dto.responsedto.LikeResponseDto;
 import com.smile.review.repository.like.ReviewLikeRepository;
+import com.smile.review.repository.review.ReviewRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,6 +15,7 @@ import static com.smile.review.service.ReviewService.reviewRepository;
 @RequiredArgsConstructor
 public class LikeService {
 
+    private final ReviewRepository reviewRepository;
     private final ReviewLikeRepository reviewLikeRepository;
 
     /**

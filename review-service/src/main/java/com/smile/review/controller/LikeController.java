@@ -16,7 +16,7 @@ public class LikeController {
 
     private final LikeService likeService;
 
-    /** 좋아요 토글 (POST) */
+    /** 좋아요 토글 (POST)  ok */
     @PostMapping
     public ResponseEntity<LikeResponseDto> toggle(
             @PathVariable Long reviewId,
@@ -26,7 +26,7 @@ public class LikeController {
         return ResponseEntity.ok(dto);
     }
 
-    /** 좋아요 조회 (GET) */
+    /** 좋아요 조회 (GET)  ok */
     @GetMapping
     public ResponseEntity<LikeResponseDto> info(
             @PathVariable Long reviewId,
@@ -35,7 +35,7 @@ public class LikeController {
         return ResponseEntity.ok(dto);
     }
 
-    /** 좋아요 취소 (DELETE) */
+    /** 좋아요 취소 (DELETE) ok */
     @DeleteMapping
     public ResponseEntity<Void> cancel(
             @PathVariable Long reviewId,
