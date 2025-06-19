@@ -21,6 +21,7 @@ public class LikeController {
     public ResponseEntity<LikeResponseDto> toggle(
             @PathVariable Long reviewId,
             Principal principal) {
+        System.out.println("리뷰 ID: " + reviewId + ", 사용자: " + (principal == null ? "null" : principal.getName()));
         LikeResponseDto dto = likeService.toggleLike(reviewId, principal.getName());
         return ResponseEntity.ok(dto);
     }
