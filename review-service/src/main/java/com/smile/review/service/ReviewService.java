@@ -25,7 +25,7 @@ import java.util.List;
 
 public interface ReviewService {
 
-    ReviewResponseDto getReviewId(Long reviewId, String userId, Long movieId);
+    ReviewResponseDto getReviewId(Long reviewId, Long movieId);
 
     MovieClient movieClient = null;
     UserClient userClient = null;
