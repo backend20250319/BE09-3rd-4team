@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import static com.smile.review.service.ReviewService.reviewRepository;
+
 @Service
 @RequiredArgsConstructor
 public class LikeService {
@@ -19,6 +21,15 @@ public class LikeService {
      */
     @Transactional
     public LikeResponseDto toggleLike(Long reviewId, String username) {
+
+        // 1. 인증 및 유효성 체크
+        if (username == null || username.isEmpty()) {
+            throw new IllegalArgumentException("로그인 정보가 없습니다.");
+        }
+        if (!reviewRepository.existsById(reviewId)) {
+            throw new IllegalArgumentException("존재하지 않는 리뷰입니다: " + reviewId);
+        }
+
         boolean exists = reviewLikeRepository.existsByReviewIdAndUsername(reviewId, username);
 
         if (exists) {
