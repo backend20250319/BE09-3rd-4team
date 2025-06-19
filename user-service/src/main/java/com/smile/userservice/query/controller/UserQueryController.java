@@ -25,8 +25,15 @@ public class UserQueryController {
     }
 
     // userId를 통한 사용자 정보 조회
-    @GetMapping("/users/{userId}")
+    @GetMapping("/internal/users/{userId}")
     public ResponseEntity<ApiResponse<UserDetailsResponse>> getUser(@PathVariable("userId") String userId) {
+        UserDetailsResponse response = userQueryService.getUserDetail(userId);
+        return ResponseEntity.ok(ApiResponse.success(response));
+    }
+
+    // userId를 통한 사용자 정보 조회 (관리자용)
+    @GetMapping("/users/{userId}")
+    public ResponseEntity<ApiResponse<UserDetailsResponse>> getUserByAdmin(@PathVariable("userId") String userId) {
         UserDetailsResponse response = userQueryService.getUserDetail(userId);
         return ResponseEntity.ok(ApiResponse.success(response));
     }
@@ -47,7 +54,7 @@ public class UserQueryController {
             @AuthenticationPrincipal String userId
     ){
         UserDetailsResponse response = userQueryService.deleteUser(userId);
-        return ResponseEntity.ok(ApiResponse.success(response));
+        return ResponseEntity.ok(ApiResponse.success(null));
     }
 
 }

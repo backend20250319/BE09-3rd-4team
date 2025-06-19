@@ -82,14 +82,14 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Override
     @Transactional(readOnly = true)
-    public ReviewResponseDto getReviewId(Long reviewId, String userId,Long movieId) {
+    public ReviewResponseDto getReviewId(Long reviewId, Long movieId) {
         Review review = reviewRepository.findById(reviewId)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 리뷰 ID: " + reviewId));
 
         // 작성자 정보 조회
         UserDto userDto;
         try {
-            userDto = userClient.getUserId(userId).getData().getUser();
+            userDto = userClient.getUserId(review.getUserId()).getData().getUser();
         } catch (Exception ex) {
             throw new IllegalArgumentException("사용자 정보를 가져올 수 없습니다: id=" + review.getUserId(), ex);
         }
@@ -134,7 +134,7 @@ public class ReviewServiceImpl implements ReviewService {
                     MovieDto movieDto = movieClient.getMovieId(review.getMovieId()).getData();
                     return ReviewResponseDto.fromEntity(
                             review,
-                            userDto.getUserId(),
+                            userDto.getUserName(),
                             movieDto.getTitle()
                     );
                 });

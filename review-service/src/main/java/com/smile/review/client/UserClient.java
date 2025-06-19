@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 public interface UserClient {
 
     // 2. 내부에서 user-service를 호출하는 상황
-    @GetMapping("/users/{userId}")
+    @GetMapping("/internal/users/{userId}")
     ApiResponse<UserDetailsResponse> getUserId(@PathVariable("userId") String userName);
 
 
