@@ -38,12 +38,9 @@ public class ReviewServiceImpl implements ReviewService {
     private final UserClient userClient;
     private final MovieClient movieClient;
 
-
-
     @Override
     @Transactional
     public ReviewResponseDto createReview(String userId, Long movieId, String content , double rating) {
-
 
         // 사용자 조회
         UserDto userDto;
@@ -77,7 +74,7 @@ public class ReviewServiceImpl implements ReviewService {
         Review saved = reviewRepository.save(review);
 
         // DTO 변환
-        return ReviewResponseDto.fromEntity(saved, userDto.getUserId(), movieDto.getTitle());
+        return ReviewResponseDto.fromEntity(saved, userDto.getUserName(), movieDto.getTitle());
     }
 
     @Override
@@ -119,7 +116,7 @@ public class ReviewServiceImpl implements ReviewService {
                     MovieDto movieDto = movieClient.getMovieId(review.getMovieId()).getData();
                     return ReviewResponseDto.fromEntity(
                             review,
-                            userDto.getUserId(),
+                            userDto.getUserName(),
                             movieDto.getTitle()
                     );
                 });
@@ -174,7 +171,7 @@ public class ReviewServiceImpl implements ReviewService {
         } catch (Exception ex) {
             throw new IllegalArgumentException("영화 정보를 가져올 수 없습니다: id=" + updated.getMovieId(), ex);
         }
-        return ReviewResponseDto.fromEntity(updated, userDto.getUserId(), movieDto.getTitle());
+        return ReviewResponseDto.fromEntity(updated, userDto.getUserName(), movieDto.getTitle());
     }
 
     @Override

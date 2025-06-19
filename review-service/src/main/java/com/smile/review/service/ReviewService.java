@@ -53,7 +53,7 @@ public interface ReviewService {
         Review saved = reviewRepository.save(review);
 
         // 4) DTO 변환 후 반환
-        return ReviewResponseDto.fromEntity(saved, userDto.getUserId(), movieDto.getTitle());
+        return ReviewResponseDto.fromEntity(saved, userDto.getUserName(), movieDto.getTitle());
     }
 
     @Transactional(readOnly = true)
