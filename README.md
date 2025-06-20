@@ -95,9 +95,9 @@
 ---
 
 # 📌 3. 세부 기능 설명
-- [인터페이스 설계서](https://docs.google.com/spreadsheets/d/1vXpqbwAFqt-8OEMkC5BYyRehNwXNjVeQRfF6j5qr_C0/edit?gid=0#gid=0)
-- [테스트 케이스](https://www.notion.so/coffit23/4-20fa02b1ffb181deba23dd0ce9777649?pvs=18)
-- [이벤트 스토밍](https://miro.com/app/board/uXjVIpB-qR4=/)
+- [**`인터페이스 설계서`**](https://docs.google.com/spreadsheets/d/1vXpqbwAFqt-8OEMkC5BYyRehNwXNjVeQRfF6j5qr_C0/edit?gid=0#gid=0)
+- [**`테스트 케이스`**](https://www.notion.so/coffit23/4-20fa02b1ffb181deba23dd0ce9777649?pvs=18)
+- [**`이벤트 스토밍`**](https://miro.com/app/board/uXjVIpB-qR4=/)
 ---
 
 # 🛠 4. 기술 스택
