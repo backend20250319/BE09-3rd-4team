@@ -93,7 +93,12 @@
 | REQ-ADMIN-004 | 추천 키워드 관리 | 관리자 | 추천 키워드 등록/수정/삭제 기능을 통해 추천 시스템을 운영할 수 있다. | 높음 | 중간 | 기능 구현 |
 
 ---
-# 🛠 3. 기술 스택
+
+# 📌 3. 세부 기능 설명
+- [인터페이스 설계서](https://docs.google.com/spreadsheets/d/1vXpqbwAFqt-8OEMkC5BYyRehNwXNjVeQRfF6j5qr_C0/edit?gid=0#gid=0)
+- [테스트 케이스](https://www.notion.so/coffit23/4-20fa02b1ffb181deba23dd0ce9777649?pvs=18)
+
+# 🛠 4. 기술 스택
 
 | 항목             | 사용 기술                                                                               |
 |------------------|----------------------------------------------------------------------------------------|
@@ -104,7 +109,7 @@
 | **협업/버전관리**| ![GitHub](https://img.shields.io/badge/GITHUB-181717?style=for-the-badge&logo=github&logoColor=white) ![Git](https://img.shields.io/badge/GIT-F05032?style=for-the-badge&logo=git&logoColor=white) |
 
 ---
-# 📝 4. 회고
+# 📝 5. 회고
 
 ### 이나영
 
