@@ -1,4 +1,4 @@
-# 🗾️ 1. 프로젝트 기획서
+# 💻 1. 프로젝트 기획서
 
 ## 📄 1-1. 프로젝트 개요
 - **프로젝트명 : 네플릭스마일😊**
@@ -97,6 +97,7 @@
 # 📌 3. 세부 기능 설명
 - [인터페이스 설계서](https://docs.google.com/spreadsheets/d/1vXpqbwAFqt-8OEMkC5BYyRehNwXNjVeQRfF6j5qr_C0/edit?gid=0#gid=0)
 - [테스트 케이스](https://www.notion.so/coffit23/4-20fa02b1ffb181deba23dd0ce9777649?pvs=18)
+---
 
 # 🛠 4. 기술 스택
 
@@ -105,7 +106,6 @@
 | **언어**         | ![Java](https://img.shields.io/badge/JAVA-007396?style=for-the-badge&logo=java&logoColor=white) |
 | **프레임워크**   | ![Spring](https://img.shields.io/badge/SPRING-6DB33F?style=for-the-badge&logo=spring&logoColor=white) ![Spring Boot](https://img.shields.io/badge/SPRINGBOOT-6DB33F?style=for-the-badge&logo=springboot&logoColor=white) |
 | **데이터베이스** | ![MySQL](https://img.shields.io/badge/MYSQL-4479A1?style=for-the-badge&logo=mysql&logoColor=white) |
-| **클라우드**     | ![AWS](https://img.shields.io/badge/AWS-232F3E?style=for-the-badge&logo=amazonaws&logoColor=white) |
 | **협업/버전관리**| ![GitHub](https://img.shields.io/badge/GITHUB-181717?style=for-the-badge&logo=github&logoColor=white) ![Git](https://img.shields.io/badge/GIT-F05032?style=for-the-badge&logo=git&logoColor=white) |
 
 ---
