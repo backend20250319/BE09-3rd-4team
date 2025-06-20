@@ -10,7 +10,6 @@
 | ![이나영](https://avatars.githubusercontent.com/u/106491547?v=4) | ![유지은](https://avatars.githubusercontent.com/u/106491548?v=4) | ![박준서](https://avatars.githubusercontent.com/u/106491549?v=4) | ![박창준](https://avatars.githubusercontent.com/u/123456789?v=4) | ![정승원](https://avatars.githubusercontent.com/u/106491551?v=4) |
 | [GitHub](https://github.com/NYoungLEE) | [GitHub](https://github.com/yde222) | [GitHub](https://github.com/Berry-mas) | [GitHub](https://github.com/changjunpark13) | [GitHub](https://github.com/dkrio) |
 
-
 ## 📅 1-3. 프로젝트 설명
 
 - 본 프로젝트는 마이크로서비스 아키텍처(MSA) 기반의 영화 리뷰 및 추천 플랫폼이다. 사용자는 영화 정보를 검색·탐색하고, 리뷰와 평점을 남기며, 개인화된 추천 서비스를 경험할 수 있다. 관리자는 영화, 리뷰 등 각종 컨텐츠를 효율적으로 관리할 수 있다.
@@ -92,21 +91,6 @@
 | REQ-ADMIN-002 | 영화 정보 수정 | 관리자 | 영화 정보(포스터, 설명 등)를 수정할 수 있다. | 중간 | 중간 | 기능 구현 |
 | REQ-ADMIN-003 | 영화 정보 삭제 | 관리자 | 잘못된 영화 정보를 삭제할 수 있다. | 중간 | 낮음 | 기능 구현 |
 | REQ-ADMIN-004 | 추천 키워드 관리 | 관리자 | 추천 키워드 등록/수정/삭제 기능을 통해 추천 시스템을 운영할 수 있다. | 높음 | 중간 | 기능 구현 |
-
-
-
-## 🗺 2-4. MSA 서비스 구조 및 담당자
-
-| 서비스명            | 역할                        | 담당자      |
-|---------------------|-----------------------------|-------------|
-| config-service      | 공통 설정 관리              | -           |
-| discovery-service   | 서비스 등록/탐색 (Eureka)   | -           |
-| gateway-service     | API 진입점                  | -           |
-| user-service        | 회원가입/로그인             | 이나영      |
-| movie-service       | 영화 목록/상세 정보         | 정승원      |
-| review-service      | 리뷰 작성/조회              | 유지은      |
-| search-service      | 검색 및 필터                | 박창준      |
-| recommend-service   | 영화 추천 기능              | 박준서      |
 
 ---
 # 🛠 3. 기술 스택
