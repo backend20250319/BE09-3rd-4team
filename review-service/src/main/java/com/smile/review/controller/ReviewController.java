@@ -1,6 +1,7 @@
 package com.smile.review.controller;
 
 
+import com.smile.review.domain.Review;
 import com.smile.review.dto.StarRatingDto;
 import com.smile.review.dto.requestdto.ReviewRequestDto;
 import com.smile.review.dto.responsedto.ReviewResponseDto;
@@ -18,6 +19,9 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
+
+import static com.smile.review.service.ReviewService.reviewRepository;
 
 
 @RestController
@@ -144,6 +148,20 @@ public class ReviewController {
                                                  @PathVariable String gender) {
         return reviewService.getByAgeAndGender(ageGroup, gender);
     }
+
+    @GetMapping("/internal/reviews/movie/{movieId}/average-rating")
+    public ResponseEntity<Double> getAverageRatingByMovieId(@PathVariable Long movieId) {
+        Double avg = reviewRepository.findAverageRatingByMovieId(movieId);
+        return ResponseEntity.ok(avg != null ? avg : 0.0);
+    }
+
+    @GetMapping("/internal/reviews/movie/{movieId}/ratings")
+    public ResponseEntity<List<Double>> getRatingsByMovieId(@PathVariable Long movieId) {
+        List<Double> ratings = reviewService.getRatingsByMovieId(movieId);
+        return ResponseEntity.ok(ratings);
+    }
+
+
 
 
 }

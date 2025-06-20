@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -49,4 +50,9 @@ public class Movie {
             inverseJoinColumns = @JoinColumn(name = "genre_id")
     )
     private Set<Genre> genres = new HashSet<>();
+
+    public void updateRatingFrom(List<Double> ratings) {
+        double avg = ratings.stream().mapToDouble(Double::doubleValue).average().orElse(0.0);
+        this.rating = avg;
+    }
 }

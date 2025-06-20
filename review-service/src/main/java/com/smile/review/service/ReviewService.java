@@ -33,6 +33,7 @@ public interface ReviewService {
     // ... 기타 의존성 주입
 
 
+    @Transactional
     public default ReviewResponseDto createReview(String userId, Long movieId, String content, double rating) {
         // 1) 사용자 검증
         UserDto userDto = userClient.getUserId(userId).getData().getUser();
@@ -52,6 +53,13 @@ public interface ReviewService {
         review.setCreatedAt(LocalDateTime.now());
         Review saved = reviewRepository.save(review);
 
+        try {
+            movieClient.updateAverageRating(movieId);
+            System.out.println("[연결 확인] movieClient 호출 성공");
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            System.out.println("[오류] movieClient 호출 실패: " + ex.getMessage());
+        }
         // 4) DTO 변환 후 반환
         return ReviewResponseDto.fromEntity(saved, userDto.getUserName(), movieDto.getTitle());
     }
@@ -73,6 +81,11 @@ public interface ReviewService {
     List<StarRatingDto> getByGender(String gender);
 
     List<StarRatingDto> getByAgeAndGender(String ageGroup, String gender);
+
+    // ReviewService.java (interface)
+
+    List<Double> getRatingsByMovieId(Long movieId);
+
 
 }
 

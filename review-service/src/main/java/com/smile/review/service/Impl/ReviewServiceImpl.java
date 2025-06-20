@@ -267,6 +267,11 @@ public class ReviewServiceImpl implements ReviewService {
         return "70대 이상";
     }
 
+    @Override
+    public List<Double> getRatingsByMovieId(Long movieId) {
+        return reviewRepository.findRatingsByMovieId(movieId);
+    }
+
 
 
 }

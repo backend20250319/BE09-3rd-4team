@@ -1,5 +1,6 @@
 package com.smile.movieservice.service;
 
+import com.smile.movieservice.client.ReviewClient;
 import com.smile.movieservice.dto.MovieRequest;
 import com.smile.movieservice.dto.MovieResponse;
 import com.smile.movieservice.entity.Actor;
@@ -26,6 +27,7 @@ public class MovieService {
     private final GenreRepository genreRepository;
     private final DirectorRepository directorRepository;
     private final ActorRepository actorRepository;
+    private final ReviewClient reviewClient;
 
     @Transactional
     public MovieResponse createMovie(MovieRequest request) {
@@ -124,4 +126,22 @@ public class MovieService {
                 .actors(actorNames)
                 .build();
     }
+
+    public void recalculateAndUpdateAverageRating(Long movieId) {
+        // 1. 리뷰 서비스에서 평점 목록을 가져옴
+        List<Double> ratings = reviewClient.getRatingsByMovieId(movieId);
+        if (ratings == null || ratings.isEmpty()) return;
+
+        // 2. 영화 객체 조회
+        Movie movie = movieRepository.findById(movieId)
+                .orElseThrow(() -> new RuntimeException("해당 영화가 존재하지 않습니다."));
+
+        // 3. 영화 객체가 직접 평균 계산 & 반영
+        movie.updateRatingFrom(ratings);
+
+        // 4. DB 저장
+        movieRepository.save(movie);
+    }
+
+
 }

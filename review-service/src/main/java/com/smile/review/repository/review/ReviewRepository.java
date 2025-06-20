@@ -4,6 +4,8 @@ import com.smile.review.domain.Review;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -39,4 +41,10 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
      * 예: 특정 사용자와 특정 영화 조합으로 이전에 리뷰를 남겼는지 확인할 때
      */
     boolean existsByUserIdAndMovieId(String userId, Long movieId);
+
+    @Query("SELECT AVG(r.rating) FROM Review r WHERE r.movieId = :movieId")
+    Double findAverageRatingByMovieId(@Param("movieId") Long movieId);
+
+    @Query("SELECT r.rating FROM Review r WHERE r.movieId = :movieId")
+    List<Double> findRatingsByMovieId(@Param("movieId") Long movieId);
 }
