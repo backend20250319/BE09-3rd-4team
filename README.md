@@ -47,14 +47,15 @@
 
 | 모듈명              | 기능 역할                                                    |
 |---------------------|------------------------------------------------------------|
-| **`config-service`**      | Spring Cloud Config 서버, 공통/중앙 설정 관리              |
-| **`discovery-service`**   | Eureka 서비스 디스커버리, 마이크로서비스 등록/탐색          |
-| **`gateway-service`**     | API Gateway, 라우팅/필터링/인증 등 API 진입점 허브 역할     |
-| **`user-service`**        | 회원가입/로그인, 사용자 계정 관리                           |
+| **`search-service`**      | 영화 검색/필터, 다양한 조건으로 영화 목록 조회              |
 | **`movie-service`**       | 영화 목록 및 상세 정보 관리, 영화 등록/수정/삭제            |
 | **`review-service`**      | 영화 리뷰 작성/조회/삭제/수정 기능 제공                     |
-| **`search-service`**      | 영화 검색/필터, 다양한 조건으로 영화 목록 조회              |
 | **`recommend-service`**   | 사용자/리뷰/별점 기반 맞춤형 영화 추천 기능                |
+| **`user-service`**        | 회원가입/로그인, 사용자 계정 관리                           |
+| **`gateway-service`**     | API Gateway, 라우팅/필터링/인증 등 API 진입점 허브 역할     |
+| **`config-service`**      | Spring Cloud Config 서버, 공통/중앙 설정 관리              |
+| **`discovery-service`**   | Eureka 서비스 디스커버리, 마이크로서비스 등록/탐색          |
+
 
 ---
 
