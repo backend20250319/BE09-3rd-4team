@@ -50,4 +50,13 @@ public class MovieController {
         MovieResponse movie = movieService.getMovieById(id);
         return ResponseEntity.ok(ApiResponse.success(movie));
     }
+
+    // 영화 rating 업데이트
+    @PutMapping("/internal/movies/{movieId}/update-average-rating")
+    public ResponseEntity<Void> updateAverageRating(@PathVariable Long movieId) {
+        movieService.recalculateAndUpdateAverageRating(movieId);
+        return ResponseEntity.ok().build();
+    }
+
+
 }
