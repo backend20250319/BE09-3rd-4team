@@ -31,14 +31,22 @@ public class AgeBasedRecommendationService implements RecommendationPolicy {
 
         // 1. 로그인 사용자 정보 가져오기 (user-service에서 /users/me)
         UserDto user = userWrapper.getUser();
-
         String ageGroup = user.getAgeGroup(); // 나이 -> "20대", "30대" 등 변환
+
+        // ----------------------------------------------------
+        System.out.println("[DEBUG] 받은 gender: " + ageGroup);
+
+        if (ageGroup == null || ageGroup.isBlank()) {
+            throw new IllegalArgumentException("gender 값이 유효하지 않습니다.");
+        }
+        // ----------------------------------------------------
 
         // 2. 같은 연령대의 사용자들의 별점 정보 조회
         List<StarRatingDto> ratings = reviewClient.getByAgeGroup(ageGroup);
 
         // 3. 본인(userId 동일) 제외
         ratings = ratings.stream()
+                .filter(r -> r.getRating() != null) // null 제거
                 .filter(r -> !r.getUserId().equals(user.getUserId()))
                 .collect(Collectors.toList());
 
@@ -46,7 +54,7 @@ public class AgeBasedRecommendationService implements RecommendationPolicy {
         Map<Long, Double> movieAvgRatings = ratings.stream()
                 .collect(Collectors.groupingBy(
                         StarRatingDto::getMovieId,
-                        Collectors.averagingDouble(StarRatingDto::getStar)
+                        Collectors.averagingDouble(StarRatingDto::getRating)
                 ));
 
         // 5. 평점 높은 영화 Top 10 뽑기
@@ -58,9 +66,8 @@ public class AgeBasedRecommendationService implements RecommendationPolicy {
 
         // 6. 각 영화 ID에 대한 상세 정보 조회 (단일 조회 반복)
         List<MovieDto> movieDtoList = topMovieIds.stream()
-                .map(movieClient::getMovieById)
+                .map(movieId -> movieClient.getMovieById(movieId).getData())
                 .collect(Collectors.toList());
-
         // 7. 추천 결과 생성
         return RecommendationResultDto.builder()
                 .recommendationType(RecommendationType.AGE_BASED)

@@ -5,15 +5,16 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
 public class StarRatingDto {
     private Long movieId;
-    private String userId;
     private Double rating;
+    private String userId;
 
-    public StarRatingDto(Long movieId, double rating) {
+
+    public StarRatingDto(Long movieId, Double rating, String userId) {
         this.movieId = movieId;
         this.rating = rating;
+        this.userId = userId;
     }
 }

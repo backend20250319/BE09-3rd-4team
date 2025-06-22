@@ -1,5 +1,7 @@
 package com.smile.userservice.query.service;
 
+import com.smile.userservice.command.entity.User;
+import com.smile.userservice.command.repository.UserRepository;
 import com.smile.userservice.query.dto.UserDTO;
 import com.smile.userservice.query.dto.UserDetailsResponse;
 import com.smile.userservice.query.dto.UserModifyRequest;
@@ -16,6 +18,7 @@ public class UserQueryService {
 
     private final UserMapper userMapper;
     private final PasswordEncoder passwordEncoder;
+    private final UserRepository userRepository;
 
     public UserDetailsResponse getUserDetail(String userId) {
         UserDTO user = Optional.ofNullable(
@@ -25,6 +28,20 @@ public class UserQueryService {
         System.out.println("userId = " + user.getUserId());
         return UserDetailsResponse.builder().user(user).build();
     }
+
+    public UserDTO getUserForRecommend(String userId) {
+        User user = userRepository.findByUserId(userId)
+                .orElseThrow(() -> new RuntimeException("사용자 정보를 찾지 못했습니다."));
+
+        return UserDTO.builder()
+                .userId(user.getUserId())
+                .userName(user.getUserName())
+                .gender(user.getGender())
+                .age(user.getAge())
+                .role(user.getRole().name())
+                .build();
+    }
+
 
     public UserDetailsResponse modifyUser(String userId, UserModifyRequest request) {
 

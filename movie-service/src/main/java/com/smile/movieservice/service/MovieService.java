@@ -105,6 +105,7 @@ public class MovieService {
         return mapToResponse(movie);
     }
 
+
     private MovieResponse mapToResponse(Movie movie) {
         List<String> genreNames = movie.getGenres().stream()
                 .map(Genre::getName)

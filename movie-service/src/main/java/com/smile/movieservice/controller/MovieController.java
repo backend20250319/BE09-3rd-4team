@@ -48,6 +48,8 @@ public class MovieController {
     @GetMapping("/fetchAll/{id}")
     public ResponseEntity<ApiResponse<MovieResponse>> getMovieById(@PathVariable Long id) {
         MovieResponse movie = movieService.getMovieById(id);
+        System.out.println("🎥 movie = " + movie);
+
         return ResponseEntity.ok(ApiResponse.success(movie));
     }
 
