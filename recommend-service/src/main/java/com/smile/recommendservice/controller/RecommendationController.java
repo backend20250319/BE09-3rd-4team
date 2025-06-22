@@ -50,8 +50,6 @@ public class RecommendationController {
         return response.getData().getUser(); // 최신 정보
     }
 
-
-
     @GetMapping("/by-age")
     public ResponseEntity<RecommendationResultDto> recommendByAge() {
         UserDto user = getCurrentUser();
