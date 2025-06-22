@@ -32,18 +32,35 @@ public class JwtTokenProvider {
     }
 
     // access token 생성 메소드
-    public String createToken(String userId, String role) {
+//    public String createToken(String userId, String role) {
+//        Date now = new Date();
+//        Date expiryDate = new Date(now.getTime() + jwtExpiration);
+//        return Jwts.builder()
+//                .subject(userId)
+//                .claim("role", role)
+//                .claim("id", userId)
+//                .issuedAt(now)
+//                .expiration(expiryDate)
+//                .signWith(secretKey)
+//                .compact();
+//    }
+
+    public String createToken(String userId, String role, String gender, Integer age) {
         Date now = new Date();
         Date expiryDate = new Date(now.getTime() + jwtExpiration);
+
         return Jwts.builder()
                 .subject(userId)
                 .claim("role", role)
                 .claim("id", userId)
+                .claim("gender", gender)
+                .claim("age", age)
                 .issuedAt(now)
                 .expiration(expiryDate)
                 .signWith(secretKey)
                 .compact();
     }
+
 
     // refresh token 생성 메소드
     public String createRefreshToken(String userId, String role) {

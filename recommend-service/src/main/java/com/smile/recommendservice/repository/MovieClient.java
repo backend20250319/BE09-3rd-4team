@@ -1,5 +1,6 @@
 package com.smile.recommendservice.repository;
 
+import com.smile.recommendservice.common.ApiResponse;
 import com.smile.recommendservice.dto.MovieDto;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,7 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 public interface MovieClient {
 
     @GetMapping("/fetchAll/{movieId}")
-    MovieDto getMovieById(@PathVariable("movieId") Long movieId);
+    ApiResponse<MovieDto> getMovieById(@PathVariable("movieId") Long movieId);
 
 
 }

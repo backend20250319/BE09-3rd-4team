@@ -19,6 +19,7 @@ public class JwtAuthenticationFilter implements GlobalFilter, Ordered {
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
+
         String authHeader = exchange.getRequest().getHeaders().getFirst("Authorization");
 
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
@@ -36,6 +37,7 @@ public class JwtAuthenticationFilter implements GlobalFilter, Ordered {
         String role = jwtTokenProvider.getRoleFromJWT(token);
         String gender = jwtTokenProvider.getGenderFromJWT(token);
         Integer age = jwtTokenProvider.getAgeFromJWT(token);
+        System.out.println("📦 Gateway 인증 필터 동작: id=" + id + ", gender=" + gender + ", age=" + age);
 
         ServerHttpRequest.Builder requestBuilder = exchange.getRequest().mutate()
                 .header("X-User-Id", id)

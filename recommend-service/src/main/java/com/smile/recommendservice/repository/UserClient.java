@@ -3,8 +3,11 @@ package com.smile.recommendservice.repository;
 import com.smile.recommendservice.common.ApiResponse;
 import com.smile.recommendservice.config.FeignAuthConfig;
 import com.smile.recommendservice.domain.dto.UserDetailsWrapper;
+import com.smile.recommendservice.dto.UserDto;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestHeader;
 
 /* 로그인한 사용자의 성별, 연령대, 선호 장르 등 유저 정보를 가져오는 용도
 
@@ -15,7 +18,20 @@ import org.springframework.web.bind.annotation.GetMapping;
 // user-service와 통신하는 FeignClient
 @FeignClient(name = "user-service", configuration = FeignAuthConfig.class)
 public interface UserClient {
-    @GetMapping("/users/me")
-    ApiResponse<UserDetailsWrapper> getCurrentUserInfo();
+
+    @GetMapping("/internal/users/me")
+    ApiResponse<UserDetailsWrapper> getCurrentUserInfo(
+            @RequestHeader("X-User-Id") String userId,
+            @RequestHeader("X-User-Role") String role,
+            @RequestHeader("X-User-Gender") String gender,
+            @RequestHeader("X-User-Age") String age
+    );
+
+    // 추천용 사용자 정보 조회 (X-User-Id 없이 호출)
+    @GetMapping("/internal/recommend/users/{userId}")
+    ApiResponse<UserDto> getUserForRecommend(@PathVariable("userId") String userId);
 }
+
+
+
 

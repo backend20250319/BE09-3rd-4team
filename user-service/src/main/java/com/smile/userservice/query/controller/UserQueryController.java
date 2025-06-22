@@ -1,6 +1,7 @@
 package com.smile.userservice.query.controller;
 
 import com.smile.userservice.common.ApiResponse;
+import com.smile.userservice.query.dto.UserDTO;
 import com.smile.userservice.query.dto.UserDetailsResponse;
 import com.smile.userservice.query.dto.UserModifyRequest;
 import com.smile.userservice.query.service.UserQueryService;
@@ -14,6 +15,12 @@ import org.springframework.web.bind.annotation.*;
 public class UserQueryController {
 
     private final UserQueryService userQueryService;
+
+    @GetMapping("/internal/recommend/users/{userId}")
+    public ResponseEntity<ApiResponse<UserDTO>> getUserForRecommend(@PathVariable String userId) {
+        UserDTO user = userQueryService.getUserForRecommend(userId);
+        return ResponseEntity.ok(ApiResponse.success(user));
+    }
 
     // 로그인된 사용자 정보 조회
     @GetMapping("/users/me")
@@ -37,6 +44,17 @@ public class UserQueryController {
         UserDetailsResponse response = userQueryService.getUserDetail(userId);
         return ResponseEntity.ok(ApiResponse.success(response));
     }
+
+    @GetMapping("/internal/users/me")
+    public ResponseEntity<ApiResponse<UserDetailsResponse>> getUserFromInternal(
+            @RequestHeader("X-User-Id") String userId
+    ) {
+        // DB에서 gender, age 다 가져옴
+        UserDetailsResponse response = userQueryService.getUserDetail(userId);
+        return ResponseEntity.ok(ApiResponse.success(response));
+    }
+
+
 
     // 사용자 정보 수정
     @PutMapping("/users/modify")

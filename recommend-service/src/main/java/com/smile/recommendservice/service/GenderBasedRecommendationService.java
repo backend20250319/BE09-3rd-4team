@@ -48,14 +48,17 @@ public class GenderBasedRecommendationService implements RecommendationPolicy {
 
         // 3. 본인의 평점은 제외
         ratings = ratings.stream()
+                .filter(r -> r.getRating() != null) // null 제거
                 .filter(r -> !r.getUserId().equals(user.getUserId()))
                 .collect(Collectors.toList());
+
+
 
         // 4. 영화별 평균 평점 계산
         Map<Long, Double> movieAvgRatings = ratings.stream()
                 .collect(Collectors.groupingBy(
                         StarRatingDto::getMovieId,
-                        Collectors.averagingDouble(StarRatingDto::getStar)
+                        Collectors.averagingDouble(StarRatingDto::getRating)
                 ));
 
         // 5. 평균 평점 높은 순으로 Top 10 영화 ID 추출
@@ -67,13 +70,19 @@ public class GenderBasedRecommendationService implements RecommendationPolicy {
 
         // 6. 영화 ID를 기반으로 상세 영화 정보 조회
         List<MovieDto> movieDtoList = topMovieIds.stream()
-                .map(movieClient::getMovieById)
+                .map(movieId -> movieClient.getMovieById(movieId).getData())
                 .collect(Collectors.toList());
+
+        System.out.println("[DEBUG] 받은 rating size: " + ratings.size());
+        for (StarRatingDto r : ratings) {
+            System.out.println("[DEBUG] rating: " + r.getRating() + ", movieId: " + r.getMovieId() + ", userId: " + r.getUserId());
+        }
+
 
         // 7. 추천 결과 반환
         return RecommendationResultDto.builder()
                 .recommendationType(RecommendationType.GENDER_BASED)
-                .criteria(gender) // 예: "남성"
+                .criteria(gender)
                 .generatedAt(LocalDateTime.now())
                 .movies(movieDtoList)
                 .build();

@@ -1,5 +1,6 @@
 package com.smile.recommendservice.config;
 
+import com.smile.recommendservice.domain.dto.UserDetailsWrapper;
 import feign.RequestInterceptor;
 import feign.RequestTemplate;
 import jakarta.servlet.http.HttpServletRequest;
@@ -19,19 +20,28 @@ public class FeignAuthConfig {
             var authentication = SecurityContextHolder.getContext().getAuthentication();
 
             if (authentication != null && authentication.isAuthenticated()) {
-                String userId = authentication.getPrincipal().toString(); // String으로 캐스팅
-                String role = authentication.getAuthorities().stream()
-                        .map(Object::toString)
-                        .findFirst()
-                        .orElse("USER");
+                Object principal = authentication.getPrincipal();
 
-                template.header("X-User-Id", userId);
-                template.header("X-User-Role", role);
-                System.out.println("✅ Feign에 헤더 추가: " + userId + ", " + role);
+                if (principal instanceof UserDetailsWrapper userDetails) {
+                    String userId = userDetails.getUser().getUserId();
+                    String role = userDetails.getUser().getRole();
+                    String gender = userDetails.getUser().getGender();
+                    Integer age = userDetails.getUser().getAge();
+
+                    template.header("X-User-Id", userId);
+                    template.header("X-User-Role", role);
+                    template.header("X-User-Gender", gender);
+                    template.header("X-User-Age", String.valueOf(age));
+
+                    System.out.println("✅ Feign에 헤더 추가: " + userDetails.getUser());
+                } else {
+                    System.out.println("❌ principal이 예상한 타입이 아님: " + principal);
+                }
             } else {
                 System.out.println("❌ 인증 정보 없음");
             }
         };
     }
+
 
 }

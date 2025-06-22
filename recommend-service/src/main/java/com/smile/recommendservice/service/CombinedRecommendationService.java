@@ -36,11 +36,16 @@ public class CombinedRecommendationService implements RecommendationPolicy {
         String ageGroup = user.getAgeGroup(); // 예: "20대"
         String gender = user.getGender();     // 예: "남성"
 
+        // ----------------------------------------------------
+        System.out.println("[DEBUG] 받은 gender: " + ageGroup + "// + 받은 gender " + gender);
+        // ----------------------------------------------------
+
         // 2. 같은 연령대 + 성별의 사용자 평점 조회
         List<StarRatingDto> ratings = reviewClient.getByAgeAndGender(ageGroup, gender);
 
         // 3. 본인의 평점 제외
         ratings = ratings.stream()
+                .filter(r -> r.getRating() != null) // null 제거
                 .filter(r -> !r.getUserId().equals(user.getUserId()))
                 .collect(Collectors.toList());
 
@@ -48,7 +53,7 @@ public class CombinedRecommendationService implements RecommendationPolicy {
         Map<Long, Double> movieAvgRatings = ratings.stream()
                 .collect(Collectors.groupingBy(
                         StarRatingDto::getMovieId,
-                        Collectors.averagingDouble(StarRatingDto::getStar)
+                        Collectors.averagingDouble(StarRatingDto::getRating)
                 ));
 
         // 5. 평점 높은 영화 Top 10 선정
@@ -60,7 +65,7 @@ public class CombinedRecommendationService implements RecommendationPolicy {
 
         // 6. 영화 상세 정보 조회
         List<MovieDto> movieDtoList = topMovieIds.stream()
-                .map(movieClient::getMovieById)
+                .map(movieId -> movieClient.getMovieById(movieId).getData())
                 .collect(Collectors.toList());
 
         // 7. 추천 결과 반환

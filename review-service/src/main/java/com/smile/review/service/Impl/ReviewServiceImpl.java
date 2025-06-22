@@ -210,11 +210,12 @@ public class ReviewServiceImpl implements ReviewService {
         return reviewRepository.findAll().stream()
                 .map(review -> {
                     UserDto user = userClient.getUserId(review.getUserId()).getData().getUser();
+                    System.out.println("[DEBUG] StarRatingDto 생성: " + review.getUserId() + " / " + review.getRating());
                     int age = user.getAge();  // 예: 25
                     String group = getAgeGroup(age); // "20대"
 
                     if (group.equals(ageGroup)) {
-                        return new StarRatingDto(review.getMovieId(), review.getRating());
+                        return new StarRatingDto(review.getMovieId(), review.getRating(), review.getUserId());
                     } else {
                         return null; // 필터 대상 아님
                     }
@@ -229,16 +230,18 @@ public class ReviewServiceImpl implements ReviewService {
         return reviewRepository.findAll().stream()
                 .map(review -> {
                     UserDto user = userClient.getUserId(review.getUserId()).getData().getUser();
-                    String userGender = user.getGender(); // "남성", "여성" 등
+                    System.out.println("[DEBUG] StarRatingDto 생성: " + review.getUserId() + " / " + review.getRating());
+                    String userGender = user.getGender();
 
                     if (gender.equalsIgnoreCase(userGender)) {
-                        return new StarRatingDto(review.getMovieId(), review.getRating());
+                        return new StarRatingDto(review.getMovieId(), review.getRating(), review.getUserId());
                     } else {
                         return null;
                     }
                 })
                 .filter(Objects::nonNull)
                 .collect(Collectors.toList());
+
     }
 
     @Override
@@ -247,13 +250,13 @@ public class ReviewServiceImpl implements ReviewService {
         return reviewRepository.findAll().stream()
                 .map(review -> {
                     UserDto user = userClient.getUserId(review.getUserId()).getData().getUser();
-
+                    System.out.println("[DEBUG] StarRatingDto 생성: " + review.getUserId() + " / " + review.getRating());
                     int age = user.getAge();
                     String userAgeGroup = getAgeGroup(age);
                     String userGender = user.getGender();
 
                     if (userAgeGroup.equals(ageGroup) && gender.equalsIgnoreCase(userGender)) {
-                        return new StarRatingDto(review.getMovieId(), review.getRating());
+                        return new StarRatingDto(review.getMovieId(), review.getRating(),  review.getUserId());
                     } else {
                         return null;
                     }
