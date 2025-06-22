@@ -55,7 +55,6 @@ public class UserQueryController {
     }
 
 
-
     // 사용자 정보 수정
     @PutMapping("/users/modify")
     public ResponseEntity<ApiResponse<UserDetailsResponse>> modifyUser(
