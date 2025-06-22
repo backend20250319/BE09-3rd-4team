@@ -73,7 +73,14 @@ public class ReviewServiceImpl implements ReviewService {
         review.setCreatedAt(LocalDateTime.now());
         Review saved = reviewRepository.save(review);
 
-        // DTO 변환
+        try {
+            movieClient.updateAverageRating(movieId);
+            System.out.println("[연결 확인] movieClient 호출 성공");
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            System.out.println("[오류] movieClient 호출 실패: " + ex.getMessage());
+        }
+        // 4) DTO 변환 후 반환
         return ReviewResponseDto.fromEntity(saved, userDto.getUserName(), movieDto.getTitle());
     }
 

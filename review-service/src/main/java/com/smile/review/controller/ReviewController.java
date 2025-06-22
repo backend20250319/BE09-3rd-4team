@@ -149,13 +149,13 @@ public class ReviewController {
         return reviewService.getByAgeAndGender(ageGroup, gender);
     }
 
-    @GetMapping("/internal/reviews/movie/{movieId}/average-rating")
+    @GetMapping("/internal/movie/{movieId}/average-rating")
     public ResponseEntity<Double> getAverageRatingByMovieId(@PathVariable Long movieId) {
         Double avg = reviewRepository.findAverageRatingByMovieId(movieId);
         return ResponseEntity.ok(avg != null ? avg : 0.0);
     }
 
-    @GetMapping("/internal/reviews/movie/{movieId}/ratings")
+    @GetMapping("/internal/movie/{movieId}/ratings")
     public ResponseEntity<List<Double>> getRatingsByMovieId(@PathVariable Long movieId) {
         List<Double> ratings = reviewService.getRatingsByMovieId(movieId);
         return ResponseEntity.ok(ratings);

@@ -12,6 +12,7 @@ import com.smile.movieservice.repository.DirectorRepository;
 import com.smile.movieservice.repository.GenreRepository;
 import com.smile.movieservice.repository.MovieRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,6 +21,7 @@ import java.util.List;
 import java.util.Set;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class MovieService {
 
@@ -130,7 +132,10 @@ public class MovieService {
     public void recalculateAndUpdateAverageRating(Long movieId) {
         // 1. 리뷰 서비스에서 평점 목록을 가져옴
         List<Double> ratings = reviewClient.getRatingsByMovieId(movieId);
-        if (ratings == null || ratings.isEmpty()) return;
+        if (ratings == null || ratings.isEmpty()) {
+            log.warn("영화 ID {}에 대한 리뷰가 없습니다", movieId);
+            return;
+        }
 
         // 2. 영화 객체 조회
         Movie movie = movieRepository.findById(movieId)

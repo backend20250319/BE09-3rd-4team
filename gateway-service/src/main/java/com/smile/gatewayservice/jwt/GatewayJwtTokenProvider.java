@@ -33,21 +33,26 @@ public class GatewayJwtTokenProvider {
     }
 
     public String getIdFromJWT(String token) {
-        Claims claims = Jwts.parser()
-                .verifyWith(secretKey)
-                .build()
-                .parseSignedClaims(token)
-                .getPayload();
-        return claims.get("id", String.class);
+        return getClaims(token).get("id", String.class);
     }
 
     public String getRoleFromJWT(String token) {
-        Claims claims = Jwts.parser()
+        return getClaims(token).get("role", String.class);
+    }
+
+    public String getGenderFromJWT(String token) {
+        return getClaims(token).get("gender", String.class);
+    }
+
+    public Integer getAgeFromJWT(String token) {
+        return getClaims(token).get("age", Integer.class);
+    }
+
+    private Claims getClaims(String token) {
+        return Jwts.parser()
                 .verifyWith(secretKey)
                 .build()
                 .parseSignedClaims(token)
                 .getPayload();
-        return claims.get("role", String.class);
     }
-
 }

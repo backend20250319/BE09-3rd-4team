@@ -1,6 +1,7 @@
 package com.smile.recommendservice.repository;
 
 import com.smile.recommendservice.common.ApiResponse;
+import com.smile.recommendservice.config.FeignAuthConfig;
 import com.smile.recommendservice.domain.dto.UserDetailsWrapper;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,9 +13,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 이 데이터를 기반으로 → 성별 기반, 연령 기반, 장르 기반 등 정책 선택 */
 
 // user-service와 통신하는 FeignClient
-@FeignClient(name = "user-service", path = "/users")
+@FeignClient(name = "user-service", configuration = FeignAuthConfig.class)
 public interface UserClient {
-
-    @GetMapping("/me")
-    ApiResponse<UserDetailsWrapper> getCurrentUserInfo(); // ApiResponse<UserDetailsResponse> 매핑
+    @GetMapping("/users/me")
+    ApiResponse<UserDetailsWrapper> getCurrentUserInfo();
 }
+

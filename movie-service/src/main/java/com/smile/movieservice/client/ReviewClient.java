@@ -8,13 +8,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 
-@FeignClient(name = "review-service", path = "/internal/reviews", configuration = FeignClientConfig.class)
+@FeignClient(name = "review-service", path = "/reviews", configuration = FeignClientConfig.class)
 public interface ReviewClient {
 
-    @GetMapping("/movie/{movieId}/average-rating")
+    @GetMapping("/internal/movie/{movieId}/average-rating")
     Double getAverageRatingByMovieId(@PathVariable("movieId") Long movieId);
 
-    @GetMapping("/movie/{movieId}/ratings")
+    @GetMapping("/internal/movie/{movieId}/ratings")
     List<Double> getRatingsByMovieId(@PathVariable("movieId") Long movieId);
 }
 

@@ -19,38 +19,40 @@ public class JwtAuthenticationFilter implements GlobalFilter, Ordered {
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
-        // 헤더에서 'Authorization' 값을 읽어온다.
         String authHeader = exchange.getRequest().getHeaders().getFirst("Authorization");
 
-        // 만약 토큰이 없거나, "Bearer "로 시작하지 않으면 다음 체인으로 요청을 전달한다.
-        if(authHeader == null || !authHeader.startsWith("Bearer ")) {
-            return chain.filter(exchange);
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            return chain.filter(exchange); // 비인증 요청 허용
         }
 
-        // "Bearer " 접두어를 제거하고 순수 JWT 토큰만 추출한다.
         String token = authHeader.substring(7);
 
-        // JWT 토큰의 유효성을 확인
-        if(!jwtTokenProvider.validateToken(token)) {
-            // 유효하지 않다면 401상태코드를 응답
+        if (!jwtTokenProvider.validateToken(token)) {
             exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
             return exchange.getResponse().setComplete();
         }
 
-        // 토큰에서 ID와 Role정보를 추출한다.
         String id = jwtTokenProvider.getIdFromJWT(token);
         String role = jwtTokenProvider.getRoleFromJWT(token);
+        String gender = jwtTokenProvider.getGenderFromJWT(token);
+        Integer age = jwtTokenProvider.getAgeFromJWT(token);
 
-        // 기존 요청 객체를 복제(mutate)하고 헤더에 정보를 추가한다.
-        ServerHttpRequest mutateRequest = exchange.getRequest().mutate()
+        ServerHttpRequest.Builder requestBuilder = exchange.getRequest().mutate()
                 .header("X-User-Id", id)
-                .header("X-User-Role", role)
-                .build();
+                .header("X-User-Role", role);
 
-        // 변경된 요청 객체를 포함하는 새로운 ServerWebExchange를 생성
+        if (gender != null) {
+            requestBuilder.header("X-User-Gender", gender);
+        }
+        if (age != null) {
+            requestBuilder.header("X-User-Age", String.valueOf(age));
+        }
+
+        ServerHttpRequest mutateRequest = requestBuilder.build();
+
+
         ServerWebExchange mutatedExchange = exchange.mutate().request(mutateRequest).build();
 
-        // 다음 필터로 요청 전달
         return chain.filter(mutatedExchange);
     }
 

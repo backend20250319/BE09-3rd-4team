@@ -32,8 +32,19 @@ public class GenderBasedRecommendationService implements RecommendationPolicy {
         UserDto user = userDetailsWrapper.getUser();
         String gender = user.getGender(); // "남성" 또는 "여성"
 
+        // ----------------------------------------------------
+        System.out.println("[DEBUG] 받은 gender: " + gender);
+
+        if (gender == null || gender.isBlank()) {
+            throw new IllegalArgumentException("gender 값이 유효하지 않습니다.");
+        }
+        // ----------------------------------------------------
+
+
         // 2. 같은 성별의 사용자들이 남긴 별점 정보 가져오기
         List<StarRatingDto> ratings = reviewClient.getByGender(gender);
+
+
 
         // 3. 본인의 평점은 제외
         ratings = ratings.stream()

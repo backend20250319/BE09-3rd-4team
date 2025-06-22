@@ -52,9 +52,9 @@ public class MovieController {
     }
 
     // 영화 rating 업데이트
-    @PutMapping("/internal/movies/{movieId}/update-average-rating")
-    public ResponseEntity<Void> updateAverageRating(@PathVariable Long movieId) {
-        movieService.recalculateAndUpdateAverageRating(movieId);
+    @PutMapping("/internal/{id}/update-average-rating")
+    public ResponseEntity<Void> updateAverageRating(@PathVariable Long id) {
+        movieService.recalculateAndUpdateAverageRating(id);
         return ResponseEntity.ok().build();
     }
 

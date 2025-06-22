@@ -9,14 +9,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-@FeignClient(name = "movie-service", configuration = FeignClientConfig.class)
+@FeignClient(name = "movie-service", path = "/movies", configuration = FeignClientConfig.class)
 public interface MovieClient {
 
 
-    @GetMapping("/movies/fetchAll/{movieId}")
+    @GetMapping("/fetchAll/{movieId}")
     ApiResponse<MovieDto> getMovieId(@PathVariable("movieId") Long movieId);
 
-    @PutMapping("/{movieId}/update-average-rating")
+    @PutMapping("/internal/{movieId}/update-average-rating")
     void updateAverageRating(@PathVariable("movieId") Long movieId);
 
 

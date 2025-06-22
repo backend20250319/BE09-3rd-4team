@@ -11,16 +11,16 @@ import java.util.List;
 // review-service와 통신하는 FeignClient
 // 별점 데이터 조회
 
-@FeignClient(name = "review-service", path = "/reviews")
+@FeignClient(name = "review-service")
 public interface ReviewClient {
 
-    @GetMapping("/stars/age-group/{ageGroup}")
+    @GetMapping("/reviews/stars/age-group/{ageGroup}")
     List<StarRatingDto> getByAgeGroup(@PathVariable String ageGroup);
 
-    @GetMapping("/stars/gender/{gender}")
+    @GetMapping("/reviews/stars/gender/{gender}")
     List<StarRatingDto> getByGender(@PathVariable String gender);
 
-    @GetMapping("/stars/age-group/{ageGroup}/gender/{gender}")
+    @GetMapping("/reviews/stars/age-group/{ageGroup}/gender/{gender}")
     List<StarRatingDto> getByAgeAndGender(@PathVariable String ageGroup,
                                           @PathVariable String gender);
 
